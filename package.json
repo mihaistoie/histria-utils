@@ -8,7 +8,6 @@
     "@types/assert": "latest",
     "@types/mocha": "latest",
     "@types/node": "latest",
-    "@types/uuid": "latest",
     "del": "latest",
     "gulp": "latest",
     "gulp-typescript": "latest",
