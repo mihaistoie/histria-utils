@@ -16,7 +16,7 @@ export declare var schemaUtils: {
     enumCompositions: (relations: any, cb: (relationName: string, relation: any) => void) => void;
     updateRoleRefs: (role: any, localModel: any, foreignModel: any, useInv: boolean) => void;
 };
-export declare var utils: {
+export declare var helper: {
     merge: (src: any, dst: any) => void;
     clone: (src: any) => any;
     destroy: (obj: any) => void;

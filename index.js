@@ -26,7 +26,7 @@ exports.schemaUtils = {
     updateRoleRefs: schema_utils_1.updateRoleRefs
 };
 const helper_1 = require("./lib/utils/helper");
-exports.utils = {
+exports.helper = {
     merge: helper_1.merge,
     clone: helper_1.clone,
     destroy: helper_1.destroy,

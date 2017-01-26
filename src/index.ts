@@ -18,7 +18,7 @@ export var schemaUtils = {
 
 import { merge, clone, destroy, format } from './lib/utils/helper';
 
-export var utils = {
+export var helper = {
     merge: merge,
     clone: clone,
     destroy: destroy,
