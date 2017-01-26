@@ -12,6 +12,8 @@ var promises_1 = require("./lib/utils/promises");
 exports.fs = promises_1.fs;
 var messages_1 = require("./lib/locale/messages");
 exports.messages = messages_1.messages;
+var locale_1 = require("./lib/locale/locale");
+exports.locale = locale_1.locale;
 var filter_1 = require("./lib/filter/filter");
 exports.findInArray = filter_1.findInArray;
 exports.findInMap = filter_1.findInMap;
@@ -23,7 +25,8 @@ exports.schemaUtils = {
     isComplex: schema_utils_1.isComplex,
     expandSchema: schema_utils_1.expandSchema,
     enumCompositions: schema_utils_1.enumCompositions,
-    updateRoleRefs: schema_utils_1.updateRoleRefs
+    updateRoleRefs: schema_utils_1.updateRoleRefs,
+    loadModel: schema_utils_1.loadModel
 };
 const helper_1 = require("./lib/utils/helper");
 exports.helper = {

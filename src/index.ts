@@ -1,8 +1,9 @@
-import { typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema, enumCompositions, updateRoleRefs } from './lib/schema/schema-utils';
+import { typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema, enumCompositions, updateRoleRefs, loadModel } from './lib/schema/schema-utils';
 export { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND, JSONFORMATS, DEFAULT_PARENT_NAME } from './lib/schema/schema-consts';
 export { ApplicationError } from './lib/utils/errors';
 export { fs } from './lib/utils/promises';
 export { messages } from './lib/locale/messages';
+export { locale } from './lib/locale/locale';
 export { findInArray, findInMap, filter } from './lib/filter/filter';
 
 
@@ -13,7 +14,8 @@ export var schemaUtils = {
     isComplex: isComplex,
     expandSchema: expandSchema,
     enumCompositions: enumCompositions,
-    updateRoleRefs: updateRoleRefs
+    updateRoleRefs: updateRoleRefs,
+    loadModel: loadModel
 }
 
 import { merge, clone, destroy, format } from './lib/utils/helper';
