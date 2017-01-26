@@ -210,10 +210,12 @@ async function loadJsonFromFile(jsonFile: string): Promise<any> {
 function _checkModel(schema, model) {
     schema.properties = schema.properties || {};
     schema.properties.id = idDefinition();
+    schema.meta = schema.meta || {};
 }
 
 
 function _checkRelations(schema, model) {
+    schema.meta.parent = null; 
     schema.relations && Object.keys(schema.relations).forEach(relName => {
         let rel = schema.relations[relName];
         rel.nameSpace = rel.nameSpace || schema.nameSpace;
@@ -224,6 +226,9 @@ function _checkRelations(schema, model) {
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.composite;
             if (rel.aggregationKind === AGGREGATION_KIND.none) {
                 throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
+            }
+            if (rel.aggregationKind === AGGREGATION_KIND.composite) {
+                schema.meta.parent = rel.model;
             }
         } else {
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.none;

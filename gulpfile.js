@@ -24,7 +24,7 @@ gulp.task('ts', ['clean'], function () {
     var tsProject = ts.createProject(path.resolve('./tsconfig.json'));
     var tsResult = gulp.src(path.resolve('./src/**/*.ts')).pipe(tsProject());
     return merge([
-        tsResult.dts.pipe(gulp.dest('definitions')),
+        tsResult.dts.pipe(gulp.dest('./definitions')),
         tsResult.js.pipe(gulp.dest(path.resolve('./')))
     ]);
 
