@@ -18,9 +18,6 @@
     "ts-node": "latest",
     "typescript": "2.x.x"
   },
-  "dependencies": {
-    "uuid": "latest"
-  },
   "typescript": {
     "definition": "definitions/histria-utils.d.ts"
   },
