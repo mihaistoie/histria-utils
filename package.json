@@ -1,0 +1,35 @@
+{
+  "name": "histria-utils",
+  "description": "HistriaJs utilities: schema ",
+  "version": "1.0.0",
+  "author": "Mihai STOIE <mihaistoie@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/assert": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "@types/uuid": "latest",
+    "del": "latest",
+    "gulp": "latest",
+    "gulp-typescript": "latest",
+    "merge2": "latest",
+    "mocha": "latest",
+    "run-sequence": "latest",
+    "ts-node": "latest",
+    "typescript": "2.x.x"
+  },
+  "dependencies": {
+    "uuid": "latest"
+  },
+  "typescript": {
+    "definition": "definitions/histria-utils.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mihaistoie/histria-utils"
+  },
+  "types": "/definitions/index.d.ts",
+  "scripts": {
+    "test": "mocha --compilers ts:ts-node/register test/**/*.test.ts"
+  }
+}
