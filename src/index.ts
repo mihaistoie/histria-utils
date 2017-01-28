@@ -5,7 +5,7 @@ export { fs } from './lib/utils/promises';
 export { messages } from './lib/locale/messages';
 export { locale } from './lib/locale/locale';
 export { findInArray, findInMap, filter } from './lib/filter/filter';
-export { IStorage } from './lib/interfaces/storage';
+export { IStore } from './lib/interfaces/store';
 
 
 
