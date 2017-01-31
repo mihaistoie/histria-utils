@@ -1,4 +1,4 @@
-export const JSONTYPES = {
+export const JSONTYPES: any = {
     string: 'string',
     integer: 'integer',
     boolean: 'boolean',

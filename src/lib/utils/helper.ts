@@ -48,7 +48,7 @@ var
                 dst[p] = pv;
         }
     },
-    _destroyObjects = function (obj) {
+    _destroyObjects = function (obj: any): void {
         Object.keys(obj).forEach(pn => {
             let o = obj[pn];
             if (o && o.destroy)
@@ -69,9 +69,10 @@ var
             return src;
     },
     _format = function (...args: any[]): string {
-        return args[0].replace(/{(\d+)}/g, function (match, num) {
-            num = parseInt(num, 10);
-            return args[num + 1];
+        let s: string = args[0];
+        return s.replace(/{(\d+)}/g, function (match: string, num: string) {
+            let n = parseInt(num, 10);
+            return args[n + 1];
         });
     };
 

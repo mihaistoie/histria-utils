@@ -61,7 +61,7 @@ export function updateRoleRefs(role: any, localModel: any, foreignModel: any, us
     if (!role) return;
     if (useInv) {
         if (role.foreignFields && role.foreignFields.length)
-            role.foreignFields.forEach((field, index) => {
+            role.foreignFields.forEach((field: string, index: number) => {
                 let ff = role.localFields[index];
                 if (foreignModel)
                     localModel[field] = foreignModel[ff]
@@ -70,7 +70,7 @@ export function updateRoleRefs(role: any, localModel: any, foreignModel: any, us
             });
     } else {
         if (role.localFields && role.localFields.length)
-            role.localFields.forEach((field, index) => {
+            role.localFields.forEach((field: string, index: number) => {
                 let ff = role.foreignFields[index];
                 if (foreignModel)
                     localModel[field] = foreignModel[ff]
@@ -142,7 +142,7 @@ function _load$ref(reference: string, model: any, definitions: any): any {
 }
 
 
-function _toMerge(item: any, callStack: string[], model, definitions): void {
+function _toMerge(item: any, callStack: string[], model: any, definitions: any): void {
     let toMerge = null;
     if (item.allOf) {
         toMerge = item.allOf;
@@ -154,7 +154,7 @@ function _toMerge(item: any, callStack: string[], model, definitions): void {
         }
     }
     if (toMerge) {
-        toMerge.forEach(function (ci) {
+        toMerge.forEach(function (ci: any) {
             let newCallStack = callStack.slice(0);
             if (ci.$ref) {
                 let ref = _load$ref(ci.$ref, model, definitions);
@@ -173,7 +173,7 @@ function _toMerge(item: any, callStack: string[], model, definitions): void {
 function _expand$Ref(item: any, callStack: string[], model: any, definitions: any): void {
     let currentCallStack = callStack.slice(0);
     _toMerge(item, currentCallStack, model, definitions);
-    let toExpand = null;
+    let toExpand: any = null;
     if (item.properties) {
         toExpand = item;
     } else if (item.type === JSONTYPES.array && item.items) {
@@ -207,15 +207,15 @@ async function loadJsonFromFile(jsonFile: string): Promise<any> {
     return parsedJson;
 }
 
-function _checkModel(schema, model) {
+function _checkModel(schema: any, model: any) {
     schema.properties = schema.properties || {};
     schema.properties.id = idDefinition();
     schema.meta = schema.meta || {};
 }
 
 
-function _checkRelations(schema, model) {
-    schema.meta.parent = null; 
+function _checkRelations(schema: any, model: any) {
+    schema.meta.parent = null;
     schema.relations && Object.keys(schema.relations).forEach(relName => {
         let rel = schema.relations[relName];
         rel.nameSpace = rel.nameSpace || schema.nameSpace;
@@ -292,7 +292,7 @@ function _checkRelations(schema, model) {
         if (rel.foreignFields.length !== rel.localFields.length)
             throw util.format('Invalid relation "%s.%s", #foreignFields != #localFields.', schema.name, relName);
         // check fields
-        rel.localFields.forEach((lf, index) => {
+        rel.localFields.forEach((lf: string, index: number) => {
             let rf = rel.foreignFields[index];
             let crf = lf === 'id', clf = rf === 'id';
             if (crf && !refModel.properties[rf]) {
@@ -321,7 +321,7 @@ export async function loadModel(pathToModel: string, model: any): Promise<void> 
         let fn = path.join(pathToModel, fileName);
         return promises.fs.lstat(fn);
     }));
-    let jsonFiles = [];
+    let jsonFiles: string[] = [];
     stats.forEach((stat, index) => {
         let fn = path.join(pathToModel, files[index]);
         if (stat.isDirectory()) return;
@@ -329,7 +329,7 @@ export async function loadModel(pathToModel: string, model: any): Promise<void> 
             jsonFiles.push(fn);
         }
     });
-    let modelByJsonFile = {};
+    let modelByJsonFile: any = {};
     let schemas = await Promise.all(jsonFiles.map((fileName) => {
         return loadJsonFromFile(fileName);
     }));

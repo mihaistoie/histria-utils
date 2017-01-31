@@ -36,7 +36,7 @@ let
         }
     };
 
-let locales = {
+let locales: any = {
     en: en,
     fr: fr
 }

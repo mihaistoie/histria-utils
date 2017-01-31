@@ -16,7 +16,7 @@ export function findInArray(query: any, array: any[], options?: { findFirst?: bo
 
     } else {
         if (array) {
-            let _filter = (item) => { return _validate(validator, transform(item)); };
+            let _filter = (item: any) => { return _validate(validator, transform(item)); };
             return array.filter(_filter);
         }
         return [];
@@ -72,146 +72,146 @@ function and(predicate: (a: any, b: any) => boolean): (a: any, b: any) => boolea
 
 
 
-function _validate(validator, b) {
+function _validate(validator: any, b: any) {
     return validator.v(validator.a, b);
 }
 
 
-const OPERATORS = {
+const OPERATORS: any = {
     $eq: or((a, b) => a(b)),
     $ne: and((a, b) => !a(b)),
-    $or(a, b) {
-        return a.find((elem) => _validate(elem, b)) !== undefined;
+    $or(a: any, b: any) {
+        return a.find((elem: any) => _validate(elem, b)) !== undefined;
     },
     $gt: or((a, b) => _compare(b, a) > 0),
     $gte: or((a, b) => _compare(b, a) >= 0),
     $lt: or((a, b) => _compare(b, a) < 0),
     $lte: or((a, b) => _compare(b, a) <= 0),
     $mod: or((a, b) => b % a[0] == a[1]),
-    $in(a, b) {
+    $in(a: any, b: any) {
         if (Array.isArray(b))
             return b.find(element => a.indexOf(element) >= 0) !== undefined;
         else
             return a.indexOf(b) >= 0;
     },
-    $nin(a, b) {
+    $nin(a: any, b: any) {
         return !OPERATORS.$in(a, b);
     },
 
-    $not(a, b) {
+    $not(a: any, b: any) {
         return !_validate(a, b);
     },
-    $type(a, b) {
+    $type(a: any, b: any) {
         return b != void (0) ? b instanceof a || b.constructor == a : false;
     },
 
-    $all(a, b) {
+    $all(a: any, b: any) {
         b = b || [];
-        return a.every((elem) => b.indexOf(elem) > -1);
+        return a.every((elem: any) => b.indexOf(elem) > -1);
     },
 
-    $size(a, b) {
+    $size(a: any, b: any) {
         return b ? a === b.length : false;
     },
-    $nor(a, b) {
-        return b.find((elem) => !_validate(elem, b)) === undefined;
+    $nor(a: any, b: any) {
+        return b.find((elem: any) => !_validate(elem, b)) === undefined;
     },
-    $and(a, b) {
-        return a.every((elem) => _validate(elem, b));
+    $and(a: any, b: any) {
+        return a.every((elem: any) => _validate(elem, b));
     },
     $regex: or((a, b) => {
         return typeof b === 'string' && a.test(b);
     }),
-    $where(a, b) {
+    $where(a: any, b: any) {
         return a.call(b, b);
     },
-    $elemMatch(a, b) {
+    $elemMatch(a: any, b: any) {
         if (Array.isArray(b))
             return _search(b, a) >= 0;
         return _validate(a, b);
     },
-    $exists(a, b) {
+    $exists(a: any, b: any) {
         return (b != void 0) === a;
     }
 };
 
-const PREPARERS = {
-    $eq(a) {
+const PREPARERS: any = {
+    $eq(a: any) {
         if (a instanceof RegExp) {
-            return function (b) {
+            return function (b: any) {
                 return typeof b === 'string' && a.test(b);
             };
         } else if (a instanceof Function) {
             return a;
         } else if (Array.isArray(a) && !a.length) {
             // Special case of a == []
-            return function (b) {
+            return function (b: any) {
                 return (Array.isArray(b) && !b.length);
             };
         } else if (a === null) {
-            return function (b) {
+            return function (b: any) {
                 //will match both null and undefined
                 return b == null;
             }
         }
 
-        return function (b) {
+        return function (b: any) {
             return _compare(b, a) === 0;
         };
     },
-    $ne(a) {
+    $ne(a: any) {
         return PREPARERS.$eq(a);
     },
 
-    $and(a) {
+    $and(a: any) {
         return a.map(_parse);
     },
-    $or(a) {
+    $or(a: any) {
         return a.map(_parse);
     },
-    $nor(a) {
+    $nor(a: any) {
         return a.map(_parse);
     },
-    $not(a) {
+    $not(a: any) {
         return _parse(a);
     },
 
-    $regex(a, query) {
+    $regex(a: any, query: any) {
         return new RegExp(a, query.$options);
     },
 
-    $where(a) {
+    $where(a: any) {
         return typeof a === 'string' ? new Function('obj', 'return ' + a) : a;
     },
-    $elemMatch(a) {
+    $elemMatch(a: any) {
         return _parse(a);
     },
 
-    $exists(a) {
+    $exists(a: any) {
         return !!a;
     }
 };
 
 
-function _isFunction(value) {
+function _isFunction(value: any) {
     return typeof value === 'function';
 }
 
 
-function _search(arr, validator): number {
-    return arr.findIndex((item) => _validate(validator, item));
+function _search(arr: any, validator: any): number {
+    return arr.findIndex((item: any) => _validate(validator, item));
 }
 
-const search = (arr, validator) => {
-    return arr.findIndex((item) => _validate(validator, item));
+const search = (arr: any, validator: any) => {
+    return arr.findIndex((item: any) => _validate(validator, item));
 };
 
-function _createValidator(a, validate) {
+function _createValidator(a:any, validate:any) {
     return { a: a, v: validate };
 }
 
-function nestedValidator(a, b) {
-    let values = [];
+function nestedValidator(a:any, b:any) {
+    let values:any = [];
     _findValues(b, a.k, 0, values);
     if (values.length === 1)
         return _validate(a.nv, values[0]);
@@ -228,7 +228,7 @@ function _compare(a: any, b: any): any {
     return;
 }
 
-function _findValues(current, path, index, values) {
+function _findValues(current:any, path:any, index: number, values:any) {
     if (index === path.length || current == void 0) {
         values.push(current);
         return;
@@ -247,7 +247,7 @@ function _findValues(current, path, index, values) {
     }
 }
 
-function _createNestedValidator(keypath, a) {
+function _createNestedValidator(keypath: any, a: any) {
     return { a: { k: keypath, nv: a }, v: nestedValidator };
 }
 
@@ -262,7 +262,7 @@ function _parse(query: any) {
         query = { $eq: query };
     }
 
-    let validators = [];
+    let validators:any[] = [];
 
     Object.keys(query).forEach(key => {
         let a = query[key];
