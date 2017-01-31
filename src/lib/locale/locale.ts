@@ -46,7 +46,15 @@ let
     };
 
 
-export const locale = {
+let supportedLocale: any = {
     en_US: en_US,
     fr_FR: fr_FR
 }
+
+
+
+export function locale(lang: string): any {
+    return supportedLocale[lang];
+}
+
+
