@@ -23,7 +23,7 @@ export class DbManager {
         let cfg = that._namespaces.get(nameSpace);
         if (!cfg) return null;
         let driver: any = require('histria-db-' +  cfg.driver);
-        return <IStore>driver.store(cfg.options);
+        return <IStore>driver.store(nameSpace, cfg.options);
     }
 }
 

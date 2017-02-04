@@ -29,6 +29,14 @@ export class SchemaManager {
         if (!ns) return null;
         return ns.get(name);
     }
+    public enumSchemas(nameSpace: string, cb: (schema: any) => void): void {
+        let that = this;
+        if (!that._namespaces) return;
+        const ns = that._namespaces.get(nameSpace);
+        if (!ns) return;
+        for (const item of ns)
+            cb(item[1])
+    }
 }
 
 
