@@ -18,6 +18,10 @@ var filter_1 = require("./lib/filter/filter");
 exports.findInArray = filter_1.findInArray;
 exports.findInMap = filter_1.findInMap;
 exports.filter = filter_1.filter;
+var schema_manager_1 = require("./lib/db/schema-manager");
+exports.schemaManager = schema_manager_1.schemaManager;
+var db_manager_1 = require("./lib/db/db-manager");
+exports.dbManager = db_manager_1.dbManager;
 exports.schemaUtils = {
     typeOfProperty: schema_utils_1.typeOfProperty,
     isHidden: schema_utils_1.isHidden,

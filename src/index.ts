@@ -6,6 +6,9 @@ export { messages } from './lib/locale/messages';
 export { locale } from './lib/locale/locale';
 export { findInArray, findInMap, filter } from './lib/filter/filter';
 export { IStore } from './lib/interfaces/store';
+export { schemaManager } from './lib/db/schema-manager';
+export { DbDriver, dbManager } from './lib/db/db-manager';
+
 
 
 
