@@ -161,7 +161,7 @@ describe('Mongo filter', () => {
         it("$eq for nested object", function () {
             var res = filter({ 'sub.num': { '$eq': 10 } }, loremArr);
             assert(res.length > 0);
-            res.forEach(function (v) {
+            res.forEach(function (v: any) {
                 assert.equal(10, v.sub.num);
             });
         });
@@ -169,7 +169,7 @@ describe('Mongo filter', () => {
         it("$ne for nested object", function () {
             var res = filter({ 'sub.num': { '$ne': 10 } }, loremArr);
             assert(res.length > 0);
-            res.forEach(function (v) {
+            res.forEach(function (v: any) {
                 assert.notEqual(10, v.sub.num);
             });
         });
