@@ -215,7 +215,7 @@ function _checkModel(schema: any, model: any) {
 
 
 function _checkRelations(schema: any, model: any) {
-    schema.meta.parent = null;
+    //schema.meta.parent = null;
     schema.relations && Object.keys(schema.relations).forEach(relName => {
         let rel = schema.relations[relName];
         rel.nameSpace = rel.nameSpace || schema.nameSpace;
