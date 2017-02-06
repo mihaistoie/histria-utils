@@ -22,6 +22,7 @@ var schema_manager_1 = require("./lib/db/schema-manager");
 exports.schemaManager = schema_manager_1.schemaManager;
 var db_manager_1 = require("./lib/db/db-manager");
 exports.dbManager = db_manager_1.dbManager;
+exports.DbManager = db_manager_1.DbManager;
 exports.schemaUtils = {
     typeOfProperty: schema_utils_1.typeOfProperty,
     isHidden: schema_utils_1.isHidden,
