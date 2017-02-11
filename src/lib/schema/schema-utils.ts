@@ -89,6 +89,15 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
 
 }
 
+export function getChildrenOfClass(schema: any): string[] {
+    let res: string[] = [];
+    enumCompositions(schema.relations, (relName: string, relation: any) => {
+        res.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+    });
+    return res;
+}
+
+
 
 
 
