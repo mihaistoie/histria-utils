@@ -13,4 +13,5 @@ export declare function getChildrenAndRefsOfClass(schema: any): {
     children: string[];
     refs: string[];
 };
+export declare function isChild(schema: any): boolean;
 export declare function loadModel(pathToModel: string, model: any): Promise<void>;

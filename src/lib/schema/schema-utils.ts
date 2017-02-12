@@ -115,6 +115,9 @@ export function getChildrenAndRefsOfClass(schema: any): { children: string[], re
     return deps;
 }
 
+export function isChild(schema: any): boolean {
+    return !!(schema && schema.meta && schema.meta.parent);
+}
 
 
 

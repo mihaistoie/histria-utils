@@ -47,6 +47,12 @@ export class SchemaManager {
         children.shift();
         return { children: children, refs: refs };
     }
+
+    public isChild(fullClassName: string): boolean {
+        let that = this;
+        return schemaUtils.isChild(that._classes ? that._classes.get(fullClassName) : null);
+    }
+
     public schema(nameSpace: string, name: string): any {
         let that = this;
         if (!that._namespaces) return null;
