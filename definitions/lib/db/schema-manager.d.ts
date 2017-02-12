@@ -4,7 +4,10 @@ export declare class SchemaManager {
     static singleton: SchemaManager;
     constructor();
     registerSchema(schema: any): void;
-    childrenOfClass(fullClassName: string): string[];
+    childrenAndRefsOfClass(fullClassName: string): {
+        children: string[];
+        refs: string[];
+    };
     schema(nameSpace: string, name: string): any;
     enumSchemas(nameSpace: string, cb: (schema: any) => void): void;
 }

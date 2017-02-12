@@ -27,9 +27,10 @@ export class SchemaManager {
         that._classes.set(schema.name + '.' + nameSpace, schema);
     }
 
-    public childrenOfClass(fullClassName: string): string[] {
+    public childrenAndRefsOfClass(fullClassName: string): { children: string[], refs: string[] } {
         let that = this;
-        let res: string[] = [];
+        let children: string[] = [];
+        let refs: string[] = [];
         let classes = [fullClassName];
         let map: any = {};
         let i = 0;
@@ -37,13 +38,14 @@ export class SchemaManager {
             const cc = classes[i];
             if (!map[cc]) {
                 map[cc] = true;
-                const children = schemaUtils.getChildrenOfClass(that._classes.get(cc));
-                classes = classes.concat(children);
+                const deps = schemaUtils.getChildrenAndRefsOfClass(that._classes.get(cc));
+                classes = classes.concat(deps.children);
+                refs = refs.concat(deps.refs);
             }
             i++;
         }
-        res.shift();
-        return res;
+        children.shift();
+        return { children: children, refs: refs };
     }
     public schema(nameSpace: string, name: string): any {
         let that = this;

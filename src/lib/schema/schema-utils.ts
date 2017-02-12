@@ -89,12 +89,30 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
 
 }
 
-export function getChildrenOfClass(schema: any): string[] {
-    let res: string[] = [];
-    enumCompositions(schema.relations, (relName: string, relation: any) => {
-        res.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+export function getChildrenAndRefsOfClass(schema: any): { children: string[], refs: string[] } {
+    let deps: { children: string[], refs: string[] } = { children: [], refs: [] };
+    schema.relations && Object.keys(schema.relations).forEach(relationName => {
+        let relation = schema.relations[relationName];
+        switch (relation.type) {
+            case RELATION_TYPE.hasOne:
+                if (relation.aggregationKind === AGGREGATION_KIND.composite)
+                    deps.children.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                else
+                    deps.refs.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+
+                break;
+            case RELATION_TYPE.hasMany:
+                if (relation.aggregationKind === AGGREGATION_KIND.composite)
+                    deps.children.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                break;
+            case RELATION_TYPE.belongsTo:
+                if (relation.aggregationKind === AGGREGATION_KIND.shared)
+                    deps.refs.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+
+                break;
+        }
     });
-    return res;
+    return deps;
 }
 
 
