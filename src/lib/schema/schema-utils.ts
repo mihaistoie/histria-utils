@@ -96,7 +96,7 @@ export function getChildrenAndRefsOfClass(schema: any): { children: string[], re
         switch (relation.type) {
             case RELATION_TYPE.hasOne:
                 if (relation.aggregationKind === AGGREGATION_KIND.composite)
-                    deps.children.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                    deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
                 else
                     deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
 
