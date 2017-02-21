@@ -98,16 +98,16 @@ export function getChildrenAndRefsOfClass(schema: any): { children: string[], re
                 if (relation.aggregationKind === AGGREGATION_KIND.composite)
                     deps.children.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
                 else
-                    deps.refs.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                    deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
 
                 break;
             case RELATION_TYPE.hasMany:
                 if (relation.aggregationKind === AGGREGATION_KIND.composite)
-                    deps.children.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                    deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
                 break;
             case RELATION_TYPE.belongsTo:
                 if (relation.aggregationKind === AGGREGATION_KIND.shared)
-                    deps.refs.push(relation.model + '.' + (relation.nameSpace || schema.nameSpace));
+                    deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
 
                 break;
         }

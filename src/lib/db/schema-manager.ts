@@ -25,7 +25,7 @@ export class SchemaManager {
             that._namespaces.set(nameSpace, ns)
         }
         ns.set(className, schema);
-        that._classes.set(schema.name + '.' + nameSpace, schema);
+        that._classes.set(nameSpace + '.' + className, schema);
     }
 
     public childrenAndRefsOfClass(fullClassName: string): { children: string[], refs: string[] } {

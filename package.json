@@ -5,9 +5,9 @@
   "author": "Mihai STOIE <mihaistoie@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/power-assert": "latest",
     "@types/mocha": "latest",
     "@types/node": "latest",
+    "@types/power-assert": "latest",
     "del": "latest",
     "gulp": "latest",
     "gulp-typescript": "latest",
