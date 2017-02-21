@@ -40,11 +40,12 @@ export class SchemaManager {
             if (!map[cc]) {
                 map[cc] = true;
                 let schema = that._classes.get(cc);
-                const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
-                classes = classes.concat(deps.children);
-                refs = refs.concat(deps.refs);
-            } else {
-                //throw util.format('Schema not found for class "%s".', cc);
+                if (schema) {
+                    const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
+                    classes = classes.concat(deps.children);
+                    refs = refs.concat(deps.refs);
+                } else 
+                    throw util.format('Schema not found for class "%s".', cc);
             }
             i++;
         }
