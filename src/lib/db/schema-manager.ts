@@ -1,4 +1,5 @@
 import * as schemaUtils from '../schema/schema-utils'
+import * as util from 'util'
 
 export class SchemaManager {
     private _namespaces: Map<string, Map<string, any>>;
@@ -38,7 +39,10 @@ export class SchemaManager {
             const cc = classes[i];
             if (!map[cc]) {
                 map[cc] = true;
-                const deps = schemaUtils.getChildrenAndRefsOfClass(that._classes.get(cc));
+                let schema = that._classes.get(cc);
+                if (!schema)
+                    throw util.format('Schema not found for class "%s".', cc);
+                const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
                 classes = classes.concat(deps.children);
                 refs = refs.concat(deps.refs);
             }
