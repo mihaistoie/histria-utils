@@ -30,7 +30,6 @@ export class SchemaManager {
 
     public childrenAndRefsOfClass(fullClassName: string): { children: string[], refs: string[] } {
         let that = this;
-        let children: string[] = [];
         let refs: string[] = [];
         let classes = [fullClassName];
         let map: any = {};
@@ -39,7 +38,6 @@ export class SchemaManager {
             const cc = classes[i];
             if (!map[cc]) {
                 map[cc] = true;
-                if ( i > 0) children.push(cc);
                 let schema = that._classes.get(cc);
                 if (schema) {
                     const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
@@ -50,8 +48,8 @@ export class SchemaManager {
             }
             i++;
         }
-        children.shift();
-        return { children: children, refs: refs };
+        classes.shift();
+        return { children: classes, refs: refs };
     }
 
     public isChild(fullClassName: string): boolean {
