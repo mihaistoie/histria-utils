@@ -39,6 +39,7 @@ export class SchemaManager {
             const cc = classes[i];
             if (!map[cc]) {
                 map[cc] = true;
+                if ( i > 0) children.push(cc);
                 let schema = that._classes.get(cc);
                 if (schema) {
                     const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
