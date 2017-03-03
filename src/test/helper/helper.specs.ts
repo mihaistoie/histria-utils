@@ -1,7 +1,7 @@
 
 import * as assert from 'assert';
 import * as mochaUtils from 'mocha';
-import { helper } from '../../src/index';
+import { helper } from '../../index';
 
 
 describe('Utils', () => {

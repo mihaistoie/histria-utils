@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const schema_utils_1 = require("./lib/schema/schema-utils");
 var schema_consts_1 = require("./lib/schema/schema-consts");
 exports.JSONTYPES = schema_consts_1.JSONTYPES;

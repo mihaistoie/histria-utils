@@ -1,5 +1,6 @@
 /src
 /test
+/.vscode
 /gulpfile.js
 /tsconfig.json
 /yarn.lock

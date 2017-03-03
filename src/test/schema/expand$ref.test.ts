@@ -1,7 +1,7 @@
 
 import * as assert from 'assert';
 import * as mochaUtils from 'mocha';
-import { schemaUtils } from '../../src/index';
+import { schemaUtils } from '../../index';
 
 async function execTests() {
     let model = {};

@@ -1,7 +1,7 @@
 
 import * as assert from 'assert';
 import * as mochaUtils from 'mocha';
-import { filter } from '../../src/index';
+import { filter } from '../../index';
 
 
 describe('Mongo filter', () => {
