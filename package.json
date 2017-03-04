@@ -13,6 +13,7 @@
     "gulp-typescript": "latest",
     "merge2": "latest",
     "mocha": "latest",
+    "source-map-support": "latest",
     "typescript": "2.x.x"
   },
   "repository": {
