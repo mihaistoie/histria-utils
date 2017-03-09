@@ -33,7 +33,8 @@ exports.schemaUtils = {
     enumCompositions: schema_utils_1.enumCompositions,
     updateRoleRefs: schema_utils_1.updateRoleRefs,
     loadModel: schema_utils_1.loadModel,
-    roleToQuery: schema_utils_1.roleToQuery
+    roleToQuery: schema_utils_1.roleToQuery,
+    roleToQueryInv: schema_utils_1.roleToQueryInv
 };
 const helper_1 = require("./lib/utils/helper");
 exports.helper = {

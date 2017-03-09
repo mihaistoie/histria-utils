@@ -1,4 +1,4 @@
-import { typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema, enumCompositions, updateRoleRefs, loadModel, roleToQuery } from './lib/schema/schema-utils';
+import { typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema, enumCompositions, updateRoleRefs, loadModel, roleToQuery, roleToQueryInv } from './lib/schema/schema-utils';
 export { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND, JSONFORMATS, DEFAULT_PARENT_NAME } from './lib/schema/schema-consts';
 export { ApplicationError } from './lib/utils/errors';
 export { fs } from './lib/utils/promises';
@@ -21,7 +21,8 @@ export var schemaUtils = {
     enumCompositions: enumCompositions,
     updateRoleRefs: updateRoleRefs,
     loadModel: loadModel,
-    roleToQuery: roleToQuery
+    roleToQuery: roleToQuery,
+    roleToQueryInv: roleToQueryInv
 }
 
 import { merge, clone, destroy, format } from './lib/utils/helper';

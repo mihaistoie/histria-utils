@@ -21,6 +21,7 @@ export declare var schemaUtils: {
     updateRoleRefs: (role: any, localModel: any, foreignModel: any, useInv: boolean) => void;
     loadModel: (pathToModel: string, model: any) => Promise<void>;
     roleToQuery: (role: any, localModel: any) => any;
+    roleToQueryInv: (role: any, localModel: any) => any;
 };
 export declare var helper: {
     merge: (src: any, dst: any) => void;
