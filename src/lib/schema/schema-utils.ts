@@ -336,9 +336,6 @@ function _checkRelations(schema: any, model: any) {
                 if (!isCompositionParent)
                     throw util.format('Invalid relation "%s.%s", invRel for aggregations and compositions is required.', schema.name, relName);
             }
-            if (rel.aggregationKind === AGGREGATION_KIND.shared) {
-                throw util.format('Invalid relation "%s.%s", invRel for aggregations and compositions is required.', schema.name, relName);
-            }
             if (refRel) {
                 if (refRel.type === RELATION_TYPE.belongsTo) {
                     refRel.aggregationKind = refRel.aggregationKind || AGGREGATION_KIND.composite;
