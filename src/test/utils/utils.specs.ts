@@ -87,6 +87,22 @@ describe('Helper', () => {
 
     it("Clone complex array", () => {
         let nt = helper.clone(topic);
+        nt = JSON.parse(JSON.stringify(topic));
+        /*
+        let start = new Date().getTime();
+        for (var i = 0; i < 10000; i++)
+            nt = JSON.parse(JSON.stringify([topic, topic, topic, topic, topic, topic, topic, topic, co, co]));
+        let end = new Date().getTime();
+        console.log(end - start);
+
+        start = new Date().getTime();
+        for (var i = 0; i < 10000; i++)
+            nt = helper.clone([topic, topic, topic, topic, topic, topic, topic, topic, co, co]);
+        end = new Date().getTime();
+        console.log(end - start);
+
+        nt = helper.clone(topic);
+        */
         assert.deepEqual(nt, topic, 'clone (1)');
     });
     it("Clone complex object", () => {
@@ -99,7 +115,7 @@ describe('Helper', () => {
         assert.deepEqual(nt, null, 'clone (3)');
     });
     it("Clone simple object ", () => {
-        let so: any = { a: 5, b: [null]}
+        let so: any = { a: 5, b: [null] }
         so.c = null;
         let nt = helper.clone(so);
         assert.deepEqual(so, so, 'clone (4)');

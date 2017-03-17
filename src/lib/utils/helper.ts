@@ -15,16 +15,18 @@ const
     },
     _cloneObject = (src: any): any => {
         if (src === null || src === undefined) return src;
-        let res = Object.assign({}, src);
-        Object.keys(res).forEach(propertyName => {
+        let res: any = {};// Object.assign({}, src);
+        Object.keys(src).forEach(propertyName => {
             let item = src[propertyName];
             if (item) {
                 if (Array.isArray(item)) {
                     res[propertyName] = _cloneArray(item);
                 } else if (typeof item === 'object') {
                     res[propertyName] = _cloneObject(item);
-                }
+                } else
+                    res[propertyName] = item;
             }
+            else res[propertyName] = item;
         });
         return res;
     },
