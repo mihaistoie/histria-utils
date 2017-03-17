@@ -5,7 +5,7 @@ import { filter } from '../../index';
 
 
 describe('Mongo filter', () => {
-    var topic = [
+    let topic = [
         {
             name: 'craig',
             age: 90001,

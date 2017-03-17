@@ -277,6 +277,7 @@ function _checkModel(schema: any, model: any) {
 
 function _checkRelations(schema: any, model: any) {
     //schema.meta.parent = null;
+    let isView = schema.view;
     schema.relations && Object.keys(schema.relations).forEach(relName => {
         let rel = schema.relations[relName];
         rel.nameSpace = rel.nameSpace || schema.nameSpace;
@@ -284,6 +285,8 @@ function _checkRelations(schema: any, model: any) {
             throw util.format('Invalid relation "%s.%s", type is missing.', schema.name, relName);
         rel.title = rel.title || relName;
         if (rel.type === RELATION_TYPE.belongsTo) {
+            if (isView)
+                throw util.format('Invalid relation "%s.%s": a view can\'t belongs to other entity or view.', schema.name, relName);
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.composite;
             if (rel.aggregationKind === AGGREGATION_KIND.none) {
                 throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
@@ -296,79 +299,106 @@ function _checkRelations(schema: any, model: any) {
         }
 
         if (!rel.model || !model[rel.model])
-            throw util.format('Invalid relation "%s.%s", invalid remote entity(model).', schema.name, relName);
+            throw util.format('Invalid relation "%s.%s", invalid remote entity.', schema.name, relName);
         let refModel = model[rel.model];
         let refRel = null;
         if (rel.invRel) {
+            if (isView)
+                throw util.format('Invalid relation "%s.%s": invRel is not allowed.', schema.name, relName);
+            if (refModel.view)
+                throw util.format('Invalid relation "%s.%s": "%s" is a view.', schema.name, relName, rel.model);
             refModel.relations = refModel.relations || {};
             refRel = refModel.relations[rel.invRel];
         }
-        let isCompositionParent = (rel.aggregationKind === AGGREGATION_KIND.composite) && (rel.type !== RELATION_TYPE.belongsTo);
-
-        if (!refRel && (rel.aggregationKind !== AGGREGATION_KIND.none)) {
-            if (!isCompositionParent)
-                throw util.format('Invalid relation "%s.%s", invRel for aggregations and compositions is required.', schema.name, relName);
-        }
-        if (refRel) {
-            if (refRel.type === RELATION_TYPE.belongsTo) {
-                refRel.aggregationKind = refRel.aggregationKind || AGGREGATION_KIND.composite;
-                if (rel.aggregationKind === AGGREGATION_KIND.none) {
-                    throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
-                }
-            } else
-                refRel.aggregationKind = refRel.aggregationKind || AGGREGATION_KIND.none;
-
-            if (refRel.aggregationKind !== rel.aggregationKind) {
-                throw util.format('Invalid type  %s.%s.aggregationKind !== %s.%s.aggregationKind.', schema.name, relName, refModel.name, rel.invRel);
+        if (isView) {
+            if (rel.aggregationKind === AGGREGATION_KIND.shared) {
+                throw util.format('Invalid relation "%s.%s", a view can\'t have aggregations.', schema.name, relName);
             }
-            if (refRel.type === rel.type) {
-                throw util.format('Invalid type  %s.%s.type === %s.%s.type.', schema.name, relName, refModel.name, rel.invRel);
-            }
-            rel.invType = refRel.type;
-        }
-
-        if (!rel.localFields || !rel.foreignFields) {
+            let lf = relName + 'Id';
             if (rel.type === RELATION_TYPE.hasOne) {
-                if (rel.aggregationKind === AGGREGATION_KIND.none) {
+                rel.localFields = [lf];
+                rel.foreignFields = ['id'];
+                schema.properties[lf] = refIdDefinition();
+            } else  if (rel.type === RELATION_TYPE.hasMany) {
+                rel.localFields = [lf];
+                rel.foreignFields = ['id'];
+                schema.properties[lf] = {
+                    type: JSONTYPES.array,
+                    items: refIdDefinition()
+                }
+
+            } else 
+                throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
+
+        } else {
+            let isCompositionParent = (rel.aggregationKind === AGGREGATION_KIND.composite) && (rel.type !== RELATION_TYPE.belongsTo);
+            if (!refRel && (rel.aggregationKind !== AGGREGATION_KIND.none)) {
+                if (!isCompositionParent)
+                    throw util.format('Invalid relation "%s.%s", invRel for aggregations and compositions is required.', schema.name, relName);
+            }
+            if (rel.aggregationKind === AGGREGATION_KIND.shared) {
+                throw util.format('Invalid relation "%s.%s", invRel for aggregations and compositions is required.', schema.name, relName);
+            }
+            if (refRel) {
+                if (refRel.type === RELATION_TYPE.belongsTo) {
+                    refRel.aggregationKind = refRel.aggregationKind || AGGREGATION_KIND.composite;
+                    if (rel.aggregationKind === AGGREGATION_KIND.none) {
+                        throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
+                    }
+                } else
+                    refRel.aggregationKind = refRel.aggregationKind || AGGREGATION_KIND.none;
+
+                if (refRel.aggregationKind !== rel.aggregationKind) {
+                    throw util.format('Invalid type  %s.%s.aggregationKind !== %s.%s.aggregationKind.', schema.name, relName, refModel.name, rel.invRel);
+                }
+                if (refRel.type === rel.type) {
+                    throw util.format('Invalid type  %s.%s.type === %s.%s.type.', schema.name, relName, refModel.name, rel.invRel);
+                }
+                rel.invType = refRel.type;
+            }
+
+            if (!rel.localFields || !rel.foreignFields) {
+                if (rel.type === RELATION_TYPE.hasOne) {
+                    if (rel.aggregationKind === AGGREGATION_KIND.none) {
+                        rel.localFields = [relName + 'Id'];
+                        rel.foreignFields = ['id'];
+                    } else {
+                        //ref rel is belongsTo
+                        if (refRel) {
+                            rel.localFields = ['id'];
+                            rel.foreignFields = [rel.invRel + 'Id'];
+                        }
+                    }
+                } else if (rel.type === RELATION_TYPE.belongsTo) {
                     rel.localFields = [relName + 'Id'];
                     rel.foreignFields = ['id'];
-                } else {
-                    //ref rel is belongsTo
+                } else if (rel.type === RELATION_TYPE.hasMany) {
                     if (refRel) {
                         rel.localFields = ['id'];
                         rel.foreignFields = [rel.invRel + 'Id'];
                     }
                 }
-            } else if (rel.type === RELATION_TYPE.belongsTo) {
-                rel.localFields = [relName + 'Id'];
-                rel.foreignFields = ['id'];
-            } else if (rel.type === RELATION_TYPE.hasMany) {
-                if (refRel) {
-                    rel.localFields = ['id'];
-                    rel.foreignFields = [rel.invRel + 'Id'];
+            }
+            if (rel.foreignFields.length !== rel.localFields.length)
+                throw util.format('Invalid relation "%s.%s", #foreignFields != #localFields.', schema.name, relName);
+            // check fields
+            rel.localFields.forEach((lf: string, index: number) => {
+                let rf = rel.foreignFields[index];
+                let crf = lf === 'id', clf = rf === 'id';
+                if (crf && !refModel.properties[rf]) {
+                    refModel.properties[rf] = refIdDefinition();
+                } else if (clf && !schema.properties[lf]) {
+                    schema.properties[lf] = refIdDefinition();
                 }
-            }
+                if (!schema.properties[lf])
+                    throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, schema.name, lf);
+
+                if (!refModel.properties[rf])
+                    throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, refModel.name, rf);
+                if (refModel.properties[rf].type !== schema.properties[lf].type)
+                    throw util.format('Invalid relation "%s.%s", typeof %s != typeof %s.', schema.name, relName);
+            });
         }
-
-        if (rel.foreignFields.length !== rel.localFields.length)
-            throw util.format('Invalid relation "%s.%s", #foreignFields != #localFields.', schema.name, relName);
-        // check fields
-        rel.localFields.forEach((lf: string, index: number) => {
-            let rf = rel.foreignFields[index];
-            let crf = lf === 'id', clf = rf === 'id';
-            if (crf && !refModel.properties[rf]) {
-                refModel.properties[rf] = refIdDefinition();
-            } else if (clf && !schema.properties[lf]) {
-                schema.properties[lf] = refIdDefinition();
-            }
-            if (!schema.properties[lf])
-                throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, schema.name, lf);
-
-            if (!refModel.properties[rf])
-                throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, refModel.name, rf);
-            if (refModel.properties[rf].type !== schema.properties[lf].type)
-                throw util.format('Invalid relation "%s.%s", typeof %s != typeof %s.', schema.name, relName);
-        });
 
     });
 }

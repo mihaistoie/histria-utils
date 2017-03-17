@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const index_1 = require("../../index");
 describe('Mongo filter', () => {
-    var topic = [
+    let topic = [
         {
             name: 'craig',
             age: 90001,

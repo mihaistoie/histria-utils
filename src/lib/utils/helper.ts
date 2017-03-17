@@ -1,40 +1,34 @@
-var
-    _copyArray = function (src: any[], recursive: boolean): any[] {
-        let res = new Array(src.length);
-        src.forEach(function (item, index) {
-            if (recursive && Array.isArray(item)) {
-                res[index] = _copyArray(item, true);
-            } else if (recursive && typeof item === 'object') {
-                res[index] = _copyObject(null, item, true);
-            } else
-                res[index] = item;
-        });
-        return res;
-    },
-    _copyObject = function (dst: any, src: any, recursive: boolean): any {
-        let res = dst || {};
-        Object.keys(src).forEach(function (pn) {
-            let item = src[pn];
-            if (recursive && item && Array.isArray(item)) {
-                res[pn] = _copyArray(item, true);
-            } else if (recursive && item && typeof item === 'object') {
-                res[pn] = _copyObject(null, item, true);
-            } else
-                res[pn] = item;
-        });
-        return res;
-    },
-    _extend = function (dst: any, src: any, recursive: boolean): any {
-        if (!src) return dst;
-        if (Array.isArray(src)) {
-            return _copyArray(src, recursive);
-        } else if (typeof src === 'object') {
-            return _copyObject(dst, src, recursive);
-        } else
-            return dst;
-    },
+const
+    _cloneArray = (src: any[]): any[] => {
+        return src.map(item => {
+            if (item) {
+                if (Array.isArray(item))
+                    return _cloneArray(item);
+                else if (typeof item === 'object')
+                    return _cloneObject(item);
+                else
+                    return item;
 
-    _merge = function (src: any, dst: any): void {
+            } else
+                return item;
+        });
+    },
+    _cloneObject = (src: any): any => {
+        if (src === null || src === undefined) return src;
+        let res = Object.assign({}, src);
+        Object.keys(res).forEach(propertyName => {
+            let item = src[propertyName];
+            if (item) {
+                if (Array.isArray(item)) {
+                    res[propertyName] = _cloneArray(item);
+                } else if (typeof item === 'object') {
+                    res[propertyName] = _cloneObject(item);
+                }
+            }
+        });
+        return res;
+    },
+    _merge = (src: any, dst: any): void => {
         if (!src) return;
         for (let p in src) {
             let pv = src[p];
@@ -48,7 +42,7 @@ var
                 dst[p] = pv;
         }
     },
-    _destroyObjects = function (obj: any): void {
+    _destroyObjects = (obj: any): void => {
         Object.keys(obj).forEach(pn => {
             let o = obj[pn];
             if (o && o.destroy)
@@ -57,18 +51,18 @@ var
         });
 
     },
-    _clone = function (src: any): any {
+    _clone = (src: any) => {
         if (!src) return src;
         let tt = typeof src;
         if (tt === 'object') {
             if (Array.isArray(src))
-                return _copyArray(src, true);
+                return _cloneArray(src);
             else
-                return _copyObject(null, src, true);
+                return _cloneObject(src);
         } else
             return src;
     },
-    _format = function (...args: any[]): string {
+    _format = (...args: any[]): string => {
         let s: string = args[0];
         return s.replace(/{(\d+)}/g, function (match: string, num: string) {
             let n = parseInt(num, 10);
@@ -77,7 +71,7 @@ var
     };
 
 
-export var merge = _merge;
-export var clone = _clone;
-export var destroy = _destroyObjects;
-export var format = _format;
+export const merge = _merge;
+export const clone = _clone;
+export const destroy = _destroyObjects;
+export const format = _format;
