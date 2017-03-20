@@ -85,7 +85,7 @@ describe('Helper', () => {
         ]
     };
 
-    it("Clone complex array", () => {
+    it('Clone complex array', () => {
         let nt = helper.clone(topic);
         nt = JSON.parse(JSON.stringify(topic));
         /*
@@ -105,28 +105,28 @@ describe('Helper', () => {
         */
         assert.deepEqual(nt, topic, 'clone (1)');
     });
-    it("Clone complex object", () => {
+    it('Clone complex object', () => {
         let nt = helper.clone(co);
         assert.deepEqual(nt, co, 'clone (2)');
     });
 
-    it("Clone null", () => {
+    it('Clone null', () => {
         let nt = helper.clone(null);
         assert.deepEqual(nt, null, 'clone (3)');
     });
-    it("Clone simple object ", () => {
+    it('Clone simple object ', () => {
         let so: any = { a: 5, b: [null] }
         so.c = null;
         let nt = helper.clone(so);
         assert.deepEqual(so, so, 'clone (4)');
     });
-    it("Clone number", () => {
+    it('Clone number', () => {
         assert.equal(helper.clone(10), 10, 'clone (5)');
     });
-    it("Clone string", () => {
+    it('Clone string', () => {
         assert.equal(helper.clone('My name is Mihai'), 'My name is Mihai', 'clone (6)');
     });
-    it("Clone undefined", () => {
+    it('Clone undefined', () => {
         assert.equal(helper.clone(undefined), undefined, 'clone (7)');
     });
 

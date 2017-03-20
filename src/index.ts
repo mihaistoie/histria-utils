@@ -12,7 +12,7 @@ export { DbDriver, dbManager, DbManager } from './lib/db/db-manager';
 
 
 
-export var schemaUtils = {
+export const schemaUtils = {
     typeOfProperty: typeOfProperty,
     isHidden: isHidden,
     isReadOnly: isReadOnly,
@@ -27,7 +27,7 @@ export var schemaUtils = {
 
 import { merge, clone, destroy, format } from './lib/utils/helper';
 
-export var helper = {
+export const helper = {
     merge: merge,
     clone: clone,
     destroy: destroy,

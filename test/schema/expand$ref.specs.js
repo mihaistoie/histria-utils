@@ -20,32 +20,32 @@ function execTests() {
             },
             definitions: {
                 address: {
-                    type: "object",
+                    type: 'object',
                     properties: {
-                        country: { type: "string" }
+                        country: { type: 'string' }
                     }
                 },
-                string: { type: "string" }
+                string: { type: 'string' }
             }
         };
         let excepted = {
             properties: {
-                name: { type: "string" },
+                name: { type: 'string' },
                 address: {
-                    type: "object",
+                    type: 'object',
                     properties: {
-                        country: { type: "string" }
+                        country: { type: 'string' }
                     }
                 }
             },
             definitions: {
                 address: {
-                    type: "object",
+                    type: 'object',
                     properties: {
-                        country: { type: "string" }
+                        country: { type: 'string' }
                     }
                 },
-                string: { type: "string" }
+                string: { type: 'string' }
             }
         };
         index_1.schemaUtils.expandSchema(schema, null);

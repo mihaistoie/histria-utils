@@ -163,7 +163,7 @@ function refIdDefinition(): any {
 
 
 
-//reference :
+// reference :
 // schema_name"
 // schema_name.json"
 // schema.json#/definitions/definition_name"
@@ -276,7 +276,7 @@ function _checkModel(schema: any, model: any) {
 
 
 function _checkRelations(schema: any, model: any) {
-    //schema.meta.parent = null;
+    // schema.meta.parent = null;
     let isView = schema.view;
     schema.relations && Object.keys(schema.relations).forEach(relName => {
         let rel = schema.relations[relName];
@@ -319,7 +319,7 @@ function _checkRelations(schema: any, model: any) {
                 rel.localFields = [lf];
                 rel.foreignFields = ['id'];
                 schema.properties[lf] = refIdDefinition();
-            } else  if (rel.type === RELATION_TYPE.hasMany) {
+            } else if (rel.type === RELATION_TYPE.hasMany) {
                 rel.localFields = [lf];
                 rel.foreignFields = ['id'];
                 schema.properties[lf] = {
@@ -327,7 +327,7 @@ function _checkRelations(schema: any, model: any) {
                     items: refIdDefinition()
                 }
 
-            } else 
+            } else
                 throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
 
         } else {
@@ -360,7 +360,7 @@ function _checkRelations(schema: any, model: any) {
                         rel.localFields = [relName + 'Id'];
                         rel.foreignFields = ['id'];
                     } else {
-                        //ref rel is belongsTo
+                        // ref rel is belongsTo
                         if (refRel) {
                             rel.localFields = ['id'];
                             rel.foreignFields = [rel.invRel + 'Id'];

@@ -15,7 +15,7 @@ const
     },
     _cloneObject = (src: any): any => {
         if (src === null || src === undefined) return src;
-        let res: any = {};// Object.assign({}, src);
+        let res: any = {};
         Object.keys(src).forEach(propertyName => {
             let item = src[propertyName];
             if (item) {

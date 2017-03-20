@@ -43,7 +43,7 @@ export class SchemaManager {
                     const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
                     deps.children.forEach(cn => classes.push(cn));
                     refs = refs.concat(deps.refs);
-                } else 
+                } else
                     throw util.format('Schema not found for class "%s".', cc);
             }
             i++;

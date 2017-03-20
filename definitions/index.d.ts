@@ -7,7 +7,7 @@ export { findInArray, findInMap, filter } from './lib/filter/filter';
 export { IStore } from './lib/interfaces/store';
 export { schemaManager } from './lib/db/schema-manager';
 export { DbDriver, dbManager, DbManager } from './lib/db/db-manager';
-export declare var schemaUtils: {
+export declare const schemaUtils: {
     typeOfProperty: (propSchema: {
         type?: string;
         format?: string;
@@ -23,7 +23,7 @@ export declare var schemaUtils: {
     roleToQuery: (role: any, localModel: any) => any;
     roleToQueryInv: (role: any, localModel: any) => any;
 };
-export declare var helper: {
+export declare const helper: {
     merge: (src: any, dst: any) => void;
     clone: (src: any) => any;
     destroy: (obj: any) => void;

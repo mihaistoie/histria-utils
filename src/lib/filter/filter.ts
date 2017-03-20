@@ -39,9 +39,9 @@ export function findInMap(query: any, map: Map<any, any>, options?: { findFirst?
             }
         }
     }
-    return findFirst ? null : res;;
-
+    return findFirst ? null : res;
 }
+
 export function filter(query: any, array: any[]) {
     return findInArray(query, array);
 }
@@ -87,7 +87,7 @@ const OPERATORS: any = {
     $gte: or((a, b) => _compare(b, a) >= 0),
     $lt: or((a, b) => _compare(b, a) < 0),
     $lte: or((a, b) => _compare(b, a) <= 0),
-    $mod: or((a, b) => b % a[0] == a[1]),
+    $mod: or((a, b) => b % a[0] === a[1]),
     $in(a: any, b: any) {
         if (Array.isArray(b))
             return b.find(element => a.indexOf(element) >= 0) !== undefined;
@@ -102,7 +102,7 @@ const OPERATORS: any = {
         return !_validate(a, b);
     },
     $type(a: any, b: any) {
-        return b != void (0) ? b instanceof a || b.constructor == a : false;
+        return b !== void (0) ? b instanceof a || b.constructor === a : false;
     },
 
     $all(a: any, b: any) {
@@ -131,7 +131,7 @@ const OPERATORS: any = {
         return _validate(a, b);
     },
     $exists(a: any, b: any) {
-        return (b != void 0) === a;
+        return (b !== void 0) === a;
     }
 };
 
@@ -150,8 +150,8 @@ const PREPARERS: any = {
             };
         } else if (a === null) {
             return function (b: any) {
-                //will match both null and undefined
-                return b == null;
+                // will match both null and undefined
+                return b === null || b === undefined;
             }
         }
 
@@ -206,12 +206,12 @@ const search = (arr: any, validator: any) => {
     return arr.findIndex((item: any) => _validate(validator, item));
 };
 
-function _createValidator(a:any, validate:any) {
+function _createValidator(a: any, validate: any) {
     return { a: a, v: validate };
 }
 
-function nestedValidator(a:any, b:any) {
-    let values:any = [];
+function nestedValidator(a: any, b: any) {
+    let values: any = [];
     _findValues(b, a.k, 0, values);
     if (values.length === 1)
         return _validate(a.nv, values[0]);
@@ -228,8 +228,8 @@ function _compare(a: any, b: any): any {
     return;
 }
 
-function _findValues(current:any, path:any, index: number, values:any) {
-    if (index === path.length || current == void 0) {
+function _findValues(current: any, path: any, index: number, values: any) {
+    if (index === path.length || current === void 0) {
         values.push(current);
         return;
     }
@@ -262,7 +262,7 @@ function _parse(query: any) {
         query = { $eq: query };
     }
 
-    let validators:any[] = [];
+    let validators: any[] = [];
 
     Object.keys(query).forEach(key => {
         let a = query[key];

@@ -56,7 +56,7 @@ describe('Mongo filter', () => {
             ]
         }
     ];
-    it("throws error if $not is incorrect", function () {
+    it('throws error if $not is incorrect', function () {
         let error = false;
         try {
             filter({
@@ -67,8 +67,8 @@ describe('Mongo filter', () => {
         }
         assert.equal(error, false);
     });
-    it("Photography in brazil count of 1", function () {
-        var res = filter({
+    it('Photography in brazil count of 1', function () {
+        let res = filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -78,8 +78,8 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 1);
     });
-    it("Photography in brazil, haiti, and costa rica count of 1", function () {
-        var res = filter({
+    it('Photography in brazil, haiti, and costa rica count of 1', function () {
+        let res = filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -90,8 +90,8 @@ describe('Mongo filter', () => {
         assert.equal(res.length, 1);
         assert.equal(res[0], topic[0]);
     });
-    it("hobbies of photography, cooking, or biking count of 2", function () {
-        var res = filter({
+    it('hobbies of photography, cooking, or biking count of 2', function () {
+        let res = filter({
             hobbies: {
                 name: {
                     $in: ['photography', 'cooking', 'biking']
@@ -100,8 +100,8 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 2);
     });
-    it("Complex filter count of 2", function () {
-        var res = filter({
+    it('Complex filter count of 2', function () {
+        let res = filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -118,8 +118,8 @@ describe('Mongo filter', () => {
 
         assert.equal(res.length, 2);
     });
-    it("Complex filter  count of 0", function () {
-        var res = filter({
+    it('Complex filter  count of 0', function () {
+        let res = filter({
             hobbies: {
                 name: 'photos',
                 places: {
@@ -129,53 +129,53 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 0);
     });
-    it("Filter subobject hobbies count of 3", function () {
-        var res = filter({
-            "hobbies.name": "photography"
+    it('Filter subobject hobbies count of 3', function () {
+        let res = filter({
+            'hobbies.name': 'photography'
         }, topic);
         assert.equal(res.length, 2);
     });
     it('Filter dot-notation hobbies of photography, cooking, and biking count of 3', function () {
-        var res = filter({
-            "hobbies.name": {
+        let res = filter({
+            'hobbies.name': {
                 $in: ['photography', 'cooking', 'biking']
             }
         }, topic);
         assert.equal(res.length, 2);
     });
-    it("Filter to complex dot-search count of 2", function () {
-        var res = filter({
-            "hobbies.name": "photography",
-            "hobbies.places": {
+    it('Filter to complex dot-search count of 2', function () {
+        let res = filter({
+            'hobbies.name': 'photography',
+            'hobbies.places': {
                 $in: ['costa rica']
             },
-            "address.state": "MN",
-            "address.phone": {
+            'address.state': 'MN',
+            'address.phone': {
                 $exists: true
             }
         }, topic);
         assert.equal(res.length, 2);
     });
 
-    describe("nesting", function () {
-        it("$eq for nested object", function () {
-            var res = filter({ 'sub.num': { '$eq': 10 } }, loremArr);
+    describe('nesting', function () {
+        it('$eq for nested object', function () {
+            let res = filter({ 'sub.num': { '$eq': 10 } }, loremArr);
             assert(res.length > 0);
             res.forEach(function (v: any) {
                 assert.equal(10, v.sub.num);
             });
         });
 
-        it("$ne for nested object", function () {
-            var res = filter({ 'sub.num': { '$ne': 10 } }, loremArr);
+        it('$ne for nested object', function () {
+            let res = filter({ 'sub.num': { '$ne': 10 } }, loremArr);
             assert(res.length > 0);
             res.forEach(function (v: any) {
                 assert.notEqual(10, v.sub.num);
             });
         });
 
-        it("$regex for nested object (one missing key)", function () {
-            var persons = [{
+        it('$regex for nested object (one missing key)', function () {
+            let persons = [{
                 id: 1,
                 prof: 'Mr. Moriarty'
             }, {
@@ -190,8 +190,8 @@ describe('Mongo filter', () => {
                 name: 'Mr. Holmes',
                 prof: 'Detective'
             }];
-            var q = { "name": { "$regex": "n" } };
-            var res = filter(q, persons);
+            let q = { 'name': { '$regex': 'n' } };
+            let res = filter(q, persons);
             assert.deepEqual(res, [{
                 id: 3,
                 name: 'Dr. Watson',
@@ -200,134 +200,134 @@ describe('Mongo filter', () => {
         });
     });
 
-    describe("$where", function () {
+    describe('$where', function () {
 
-        var couples = [{
-            name: "SMITH",
+        let couples = [{
+            name: 'SMITH',
             person: [{
-                firstName: "craig",
-                gender: "female",
+                firstName: 'craig',
+                gender: 'female',
                 age: 29
             }, {
-                firstName: "tim",
-                gender: "male",
+                firstName: 'tim',
+                gender: 'male',
                 age: 32
             }
 
             ]
         }, {
-            name: "JOHNSON",
+            name: 'JOHNSON',
             person: [{
-                firstName: "emily",
-                gender: "female",
+                firstName: 'emily',
+                gender: 'female',
                 age: 35
             }, {
-                firstName: "jacob",
-                gender: "male",
+                firstName: 'jacob',
+                gender: 'male',
                 age: 32
             }
 
             ]
         }];
 
-        it("can filter people", function () {
-            var results = filter({ "person": { $elemMatch: { "gender": "female", "age": { "$lt": 30 } } } }, couples);
-            assert.equal(results[0].name, "SMITH");
+        it('can filter people', function () {
+            let results = filter({ 'person': { $elemMatch: { 'gender': 'female', 'age': { '$lt': 30 } } } }, couples);
+            assert.equal(results[0].name, 'SMITH');
 
-            var results = filter({ "person": { $elemMatch: { "gender": "male", "age": { "$lt": 30 } } } }, [couples[0]]);
+            results = filter({ 'person': { $elemMatch: { 'gender': 'male', 'age': { '$lt': 30 } } } }, [couples[0]]);
             assert.equal(results.length, 0);
         });
 
     });
 });
 
-var loremArr = [
+let loremArr = [
     {
-        "num": 1,
-        "pum": 1,
-        "sub": {
-            "num": 1,
-            "pum": 1
+        'num': 1,
+        'pum': 1,
+        'sub': {
+            'num': 1,
+            'pum': 1
         }
     },
     {
-        "num": 2,
-        "pum": 2,
-        "sub": {
-            "num": 2,
-            "pum": 2
+        'num': 2,
+        'pum': 2,
+        'sub': {
+            'num': 2,
+            'pum': 2
         }
     },
     {
-        "num": 3,
-        "pum": 3,
-        "sub": {
-            "num": 3,
-            "pum": 3
+        'num': 3,
+        'pum': 3,
+        'sub': {
+            'num': 3,
+            'pum': 3
         }
     },
     {
-        "num": 4,
-        "pum": 4,
-        "sub": {
-            "num": 4,
-            "pum": 4
+        'num': 4,
+        'pum': 4,
+        'sub': {
+            'num': 4,
+            'pum': 4
         }
     },
     {
-        "num": 5,
-        "pum": 5,
-        "sub": {
-            "num": 5,
-            "pum": 5
+        'num': 5,
+        'pum': 5,
+        'sub': {
+            'num': 5,
+            'pum': 5
         }
     },
     {
-        "num": 6,
-        "pum": 6,
-        "sub": {
-            "num": 6,
-            "pum": 6
+        'num': 6,
+        'pum': 6,
+        'sub': {
+            'num': 6,
+            'pum': 6
         }
     },
     {
-        "num": 7,
-        "pum": 7,
-        "sub": {
-            "num": 7,
-            "pum": 7
+        'num': 7,
+        'pum': 7,
+        'sub': {
+            'num': 7,
+            'pum': 7
         }
     },
     {
-        "num": 8,
-        "pum": 8,
-        "sub": {
-            "num": 8,
-            "pum": 8
+        'num': 8,
+        'pum': 8,
+        'sub': {
+            'num': 8,
+            'pum': 8
         }
     },
     {
-        "num": 9,
-        "pum": 9,
-        "sub": {
-            "num": 9,
-            "pum": 9
+        'num': 9,
+        'pum': 9,
+        'sub': {
+            'num': 9,
+            'pum': 9
         }
     },
     {
-        "num": 10,
-        "pum": 10,
-        "sub": {
-            "num": 10,
-            "pum": 10
+        'num': 10,
+        'pum': 10,
+        'sub': {
+            'num': 10,
+            'pum': 10
         }
     },
     {
-        "num": 11,
-        "pum": 11,
-        "sub": {
-            "num": 10,
-            "pum": 10
+        'num': 11,
+        'pum': 11,
+        'sub': {
+            'num': 10,
+            'pum': 10
         }
     }
 ];
