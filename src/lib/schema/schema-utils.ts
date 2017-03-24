@@ -297,10 +297,10 @@ function _checkRelations(schema: any, model: any) {
         } else {
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.none;
         }
-
-        if (!rel.model || !model[rel.model])
+        const fullClassName = (rel.nameSpace || schema.nameSpace) + '.' + rel.model;
+        if (!rel.model || !model[fullClassName])
             throw util.format('Invalid relation "%s.%s", invalid remote entity.', schema.name, relName);
-        let refModel = model[rel.model];
+        let refModel = model[fullClassName];
         let refRel = null;
         if (rel.invRel) {
             if (isView)
