@@ -430,7 +430,8 @@ export async function loadModel(pathToModel: string, model: any): Promise<void> 
     });
     schemas.forEach((schema) => {
         _expand$Ref(schema, [], modelByJsonFile, schema.definitions);
-        model[schema.name] = schema;
+        schema.nameSpace = schema.nameSpace || schema.name;
+        model[schema.nameSpace + '.' + schema.name] = schema;
     });
     schemas.forEach(schema => {
         _checkModel(schema, model);
