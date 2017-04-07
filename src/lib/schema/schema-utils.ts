@@ -120,27 +120,38 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
 
 }
 
-export function getChildrenAndRefsOfClass(schema: any): { children: string[], refs: string[] } {
-    let deps: { children: string[], refs: string[] } = { children: [], refs: [] };
+export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): { children: string[], refs: string[] } {
+    const deps: { children: string[], refs: string[] } = { children: [], refs: [] };
+    const isView = schema.view;
     schema.relations && Object.keys(schema.relations).forEach(relationName => {
         let relation = schema.relations[relationName];
-        switch (relation.type) {
-            case RELATION_TYPE.hasOne:
-                if (relation.aggregationKind === AGGREGATION_KIND.composite)
+        if (isView) {
+            // add only compositions that are view
+            if (relation.aggregationKind === AGGREGATION_KIND.composite) {
+                const refSchema = mapper((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                if (refSchema && refSchema.view)
                     deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
-                else if (relation.aggregationKind === AGGREGATION_KIND.none)
-                    deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+            }
 
-                break;
-            case RELATION_TYPE.hasMany:
-                if (relation.aggregationKind === AGGREGATION_KIND.composite)
-                    deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
-                break;
-            case RELATION_TYPE.belongsTo:
-                if (relation.aggregationKind === AGGREGATION_KIND.shared)
-                    deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+        } else {
+            switch (relation.type) {
+                case RELATION_TYPE.hasOne:
+                    if (relation.aggregationKind === AGGREGATION_KIND.composite)
+                        deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                    else if (relation.aggregationKind === AGGREGATION_KIND.none)
+                        deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
 
-                break;
+                    break;
+                case RELATION_TYPE.hasMany:
+                    if (relation.aggregationKind === AGGREGATION_KIND.composite)
+                        deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                    break;
+                case RELATION_TYPE.belongsTo:
+                    if (relation.aggregationKind === AGGREGATION_KIND.shared)
+                        deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+
+                    break;
+            }
         }
     });
     return deps;

@@ -1,6 +1,5 @@
 
 import * as assert from 'assert';
-import * as mochaUtils from 'mocha';
 import { filter } from '../../index';
 
 

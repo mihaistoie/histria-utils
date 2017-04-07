@@ -11,7 +11,7 @@ export declare function updateRoleRefs(role: any, localModel: any, foreignModel:
 export declare function roleToQueryInv(role: any, localModel: any): any;
 export declare function roleToQuery(role: any, localModel: any): any;
 export declare function enumCompositions(relations: any, cb: (relationName: string, relation: any) => void): void;
-export declare function getChildrenAndRefsOfClass(schema: any): {
+export declare function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): {
     children: string[];
     refs: string[];
 };

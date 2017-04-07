@@ -40,7 +40,7 @@ export class SchemaManager {
                 map[cc] = true;
                 let schema = that._classes.get(cc);
                 if (schema) {
-                    const deps = schemaUtils.getChildrenAndRefsOfClass(schema);
+                    const deps = schemaUtils.getChildrenAndRefsOfClass(schema, (fullClassName: string): any  => { return that._classes.get(fullClassName) } );
                     deps.children.forEach(cn => classes.push(cn));
                     refs = refs.concat(deps.refs);
                 } else
