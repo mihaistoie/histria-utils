@@ -158,7 +158,7 @@ export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: s
 }
 
 export function isChild(schema: any): boolean {
-    return !!(schema && schema.meta && schema.meta.parent);
+    return !!(schema && schema.meta && schema.meta.parent && schema.meta.parent !== schema.name);
 }
 
 
