@@ -16,4 +16,5 @@ export declare function getChildrenAndRefsOfClass(schema: any, mapper: (fullClas
     refs: string[];
 };
 export declare function isChild(schema: any): boolean;
+export declare function isTree(schema: any): boolean;
 export declare function loadModel(pathToModel: string, model: any): Promise<void>;

@@ -161,7 +161,9 @@ export function isChild(schema: any): boolean {
     return !!(schema && schema.meta && schema.meta.parent && schema.meta.parent !== schema.name);
 }
 
-
+export function isTree(schema: any): boolean {
+    return !!(schema && schema.meta && schema.meta.parent && schema.meta.parent === schema.name);
+}
 
 
 function idDefinition(): any {
