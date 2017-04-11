@@ -9,6 +9,7 @@ export declare class SchemaManager {
         refs: string[];
     };
     isChild(fullClassName: string): boolean;
+    isTree(fullClassName: string): boolean;
     schema(nameSpace: string, name: string): any;
     enumSchemas(nameSpace: string, cb: (schema: any) => void): void;
 }
