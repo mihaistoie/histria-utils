@@ -59,6 +59,10 @@ export class SchemaManager {
         let that = this;
         return schemaUtils.isChild(that._classes ? that._classes.get(fullClassName) : null);
     }
+    public isTree(fullClassName: string): boolean {
+        let that = this;
+        return schemaUtils.isTree(that._classes ? that._classes.get(fullClassName) : null);
+    }
 
     public schema(nameSpace: string, name: string): any {
         let that = this;

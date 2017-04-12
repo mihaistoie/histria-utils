@@ -183,6 +183,10 @@ export function isChild(schema: any): boolean {
     return !!(schema && schema.meta && schema.meta.parent);
 }
 
+export function isTree(schema: any): boolean {
+    return !!(schema && schema.meta && schema.meta.parent === schema.name);
+}
+
 
 function idDefinition(): any {
     return { type: JSONTYPES.integer, generated: true, format: JSONTYPES.id };
