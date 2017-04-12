@@ -122,33 +122,55 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
 
 export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): { children: string[], refs: string[] } {
     const deps: { children: string[], refs: string[] } = { children: [], refs: [] };
+    const classes: any = {};
+    const refs: any = {};
+    classes[schema.nameSpace + '.' + schema.name] = true;
     const isView = schema.view;
     schema.relations && Object.keys(schema.relations).forEach(relationName => {
         let relation = schema.relations[relationName];
+        let refFullName = (relation.nameSpace || schema.nameSpace) + '.' + relation.model;
         if (isView) {
             // add only compositions that are view
             if (relation.aggregationKind === AGGREGATION_KIND.composite) {
-                const refSchema = mapper((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
-                if (refSchema && refSchema.view)
-                    deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                const refSchema = mapper(refFullName);
+                if (refSchema && refSchema.view && !classes[refFullName]) {
+                    deps.children.push(refFullName);
+                    classes[refFullName] = true;
+                }
             }
 
         } else {
             switch (relation.type) {
                 case RELATION_TYPE.hasOne:
-                    if (relation.aggregationKind === AGGREGATION_KIND.composite)
-                        deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                    if (relation.aggregationKind === AGGREGATION_KIND.composite) {
+                        if (!classes[refFullName]) {
+                            deps.children.push(refFullName);
+                            classes[refFullName] = true;
+                        }
+                    }
                     else if (relation.aggregationKind === AGGREGATION_KIND.none)
-                        deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                        if (!refs[refFullName]) {
+                            deps.refs.push(refFullName);
+                            refs[refFullName] = true;
+                        }
+
 
                     break;
                 case RELATION_TYPE.hasMany:
-                    if (relation.aggregationKind === AGGREGATION_KIND.composite)
-                        deps.children.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                    if (relation.aggregationKind === AGGREGATION_KIND.composite) {
+                        if (!classes[refFullName]) {
+                            deps.children.push(refFullName);
+                            classes[refFullName] = true;
+                        }
+                    }
                     break;
                 case RELATION_TYPE.belongsTo:
-                    if (relation.aggregationKind === AGGREGATION_KIND.shared)
-                        deps.refs.push((relation.nameSpace || schema.nameSpace) + '.' + relation.model);
+                    if (relation.aggregationKind === AGGREGATION_KIND.shared) {
+                        if (!refs[refFullName]) {
+                            deps.refs.push(refFullName);
+                            refs[refFullName] = true;
+                        }
+                    }
 
                     break;
             }
@@ -158,11 +180,7 @@ export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: s
 }
 
 export function isChild(schema: any): boolean {
-    return !!(schema && schema.meta && schema.meta.parent && schema.meta.parent !== schema.name);
-}
-
-export function isTree(schema: any): boolean {
-    return !!(schema && schema.meta && schema.meta.parent && schema.meta.parent === schema.name);
+    return !!(schema && schema.meta && schema.meta.parent);
 }
 
 

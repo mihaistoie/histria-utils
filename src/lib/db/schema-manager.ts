@@ -28,9 +28,9 @@ export class SchemaManager {
         that._classes.set(nameSpace + '.' + className, schema);
     }
 
-    public childrenAndRefsOfClass(fullClassName: string): { children: string[], refs: string[] } {
+    public childrenAndRefsOfClass(fullClassName: string): { children: string[], refs: any } {
         let that = this;
-        let refs: string[] = [];
+        let refs: any = {};
         let classes = [fullClassName];
         let map: any = {};
         let i = 0;
@@ -40,9 +40,12 @@ export class SchemaManager {
                 map[cc] = true;
                 let schema = that._classes.get(cc);
                 if (schema) {
-                    const deps = schemaUtils.getChildrenAndRefsOfClass(schema, (fullClassName: string): any  => { return that._classes.get(fullClassName) } );
-                    deps.children.forEach(cn => classes.push(cn));
-                    refs = refs.concat(deps.refs);
+                    const deps = schemaUtils.getChildrenAndRefsOfClass(schema, (fullClassName: string): any => { return that._classes.get(fullClassName) });
+                    deps.children.forEach(cn => {
+                        if (!map[cn])
+                            classes.push(cn)
+                    });
+                    deps.refs.forEach(refName => refs[refName] = true)
                 } else
                     throw util.format('Schema not found for class "%s".', cc);
             }
@@ -55,11 +58,6 @@ export class SchemaManager {
     public isChild(fullClassName: string): boolean {
         let that = this;
         return schemaUtils.isChild(that._classes ? that._classes.get(fullClassName) : null);
-    }
-
-    public isTree(fullClassName: string): boolean {
-        let that = this;
-        return schemaUtils.isTree(that._classes ? that._classes.get(fullClassName) : null);
     }
 
     public schema(nameSpace: string, name: string): any {
