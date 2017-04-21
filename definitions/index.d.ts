@@ -18,6 +18,7 @@ export declare const schemaUtils: {
     isComplex: (schema: any) => boolean;
     expandSchema: (schema: any, model: any) => void;
     enumCompositions: (relations: any, cb: (relationName: string, relation: any) => void) => void;
+    enumRelations: (relations: any, cb: (relationName: string, relation: any) => void) => void;
     updateRoleRefs: (role: any, localModel: any, foreignModel: any, useInv: boolean) => void;
     loadModel: (pathToModel: string, model: any) => Promise<void>;
     roleToQuery: (role: any, localModel: any) => any;

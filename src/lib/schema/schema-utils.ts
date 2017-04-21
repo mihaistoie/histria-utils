@@ -117,8 +117,14 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
             cb(relationName, relation);
         }
     });
-
 }
+
+export function enumRelations(relations: any, cb: (relationName: string, relation: any) => void) {
+    relations && Object.keys(relations).forEach(relationName => {
+        cb(relationName, relations[relationName]);
+    });
+}
+
 
 export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): { children: string[], refs: string[] } {
     const deps: { children: string[], refs: string[] } = { children: [], refs: [] };
