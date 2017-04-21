@@ -32,6 +32,7 @@ exports.schemaUtils = {
     expandSchema: schema_utils_1.expandSchema,
     enumCompositions: schema_utils_1.enumCompositions,
     enumRelations: schema_utils_1.enumRelations,
+    parentRelation: schema_utils_1.parentRelation,
     updateRoleRefs: schema_utils_1.updateRoleRefs,
     loadModel: schema_utils_1.loadModel,
     roleToQuery: schema_utils_1.roleToQuery,

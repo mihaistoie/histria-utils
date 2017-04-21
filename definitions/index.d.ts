@@ -19,6 +19,10 @@ export declare const schemaUtils: {
     expandSchema: (schema: any, model: any) => void;
     enumCompositions: (relations: any, cb: (relationName: string, relation: any) => void) => void;
     enumRelations: (relations: any, cb: (relationName: string, relation: any) => void) => void;
+    parentRelation: (schema: any) => {
+        relationName: string;
+        relation: any;
+    };
     updateRoleRefs: (role: any, localModel: any, foreignModel: any, useInv: boolean) => void;
     loadModel: (pathToModel: string, model: any) => Promise<void>;
     roleToQuery: (role: any, localModel: any) => any;

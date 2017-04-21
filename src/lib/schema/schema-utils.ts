@@ -125,6 +125,13 @@ export function enumRelations(relations: any, cb: (relationName: string, relatio
     });
 }
 
+export function parentRelation(schema: any): { relationName: string, relation: any } {
+    if (schema.meta && schema.meta.parent && schema.relations && schema.relations[schema.meta.parent]) {
+        return { relationName: schema.meta.parent, relation: schema.relations[schema.meta.parent] }
+    }
+    return null;
+}
+
 
 export function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): { children: string[], refs: string[] } {
     const deps: { children: string[], refs: string[] } = { children: [], refs: [] };

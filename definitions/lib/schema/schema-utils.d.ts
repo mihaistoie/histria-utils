@@ -12,6 +12,10 @@ export declare function roleToQueryInv(role: any, localModel: any): any;
 export declare function roleToQuery(role: any, localModel: any): any;
 export declare function enumCompositions(relations: any, cb: (relationName: string, relation: any) => void): void;
 export declare function enumRelations(relations: any, cb: (relationName: string, relation: any) => void): void;
+export declare function parentRelation(schema: any): {
+    relationName: string;
+    relation: any;
+};
 export declare function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): {
     children: string[];
     refs: string[];

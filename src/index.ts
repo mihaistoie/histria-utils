@@ -1,4 +1,9 @@
-import { typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema, enumCompositions, enumRelations, updateRoleRefs, loadModel, roleToQuery, roleToQueryInv } from './lib/schema/schema-utils';
+import {
+    typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema,
+    enumCompositions, enumRelations,
+    updateRoleRefs, loadModel, roleToQuery,
+    roleToQueryInv, parentRelation
+} from './lib/schema/schema-utils';
 export { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND, JSONFORMATS, DEFAULT_PARENT_NAME } from './lib/schema/schema-consts';
 export { ApplicationError } from './lib/utils/errors';
 export { fs } from './lib/utils/promises';
@@ -20,6 +25,7 @@ export const schemaUtils = {
     expandSchema: expandSchema,
     enumCompositions: enumCompositions,
     enumRelations: enumRelations,
+    parentRelation: parentRelation,
     updateRoleRefs: updateRoleRefs,
     loadModel: loadModel,
     roleToQuery: roleToQuery,
