@@ -18,6 +18,8 @@ export declare const schemaUtils: {
     isComplex: (schema: any) => boolean;
     expandSchema: (schema: any, model: any) => void;
     enumCompositions: (relations: any, cb: (relationName: string, relation: any) => void) => void;
+    enumBelongsToAggregations: (relations: any, cb: (relationName: string, relation: any) => void) => void;
+    enumHasAggregations: (relations: any, cb: (relationName: string, relation: any) => void) => void;
     enumRelations: (relations: any, cb: (relationName: string, relation: any) => void) => void;
     parentRelation: (schema: any) => {
         relationName: string;

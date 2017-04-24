@@ -119,6 +119,27 @@ export function enumCompositions(relations: any, cb: (relationName: string, rela
     });
 }
 
+
+export function enumBelongsToAggregations(relations: any, cb: (relationName: string, relation: any) => void) {
+    relations && Object.keys(relations).forEach(relationName => {
+        let relation = relations[relationName];
+        if (relation.aggregationKind === AGGREGATION_KIND.shared && relation.type === RELATION_TYPE.belongsTo) {
+            cb(relationName, relation);
+        }
+    });
+}
+
+export function enumHasAggregations(relations: any, cb: (relationName: string, relation: any) => void) {
+    relations && Object.keys(relations).forEach(relationName => {
+        let relation = relations[relationName];
+        if (relation.aggregationKind === AGGREGATION_KIND.shared && (relation.type === RELATION_TYPE.hasMany || relation.type === RELATION_TYPE.hasOne)) {
+            cb(relationName, relation);
+        }
+    });
+}
+
+
+
 export function enumRelations(relations: any, cb: (relationName: string, relation: any) => void) {
     relations && Object.keys(relations).forEach(relationName => {
         cb(relationName, relations[relationName]);

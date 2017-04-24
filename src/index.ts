@@ -1,6 +1,6 @@
 import {
     typeOfProperty, isHidden, isReadOnly, isComplex, expandSchema,
-    enumCompositions, enumRelations,
+    enumCompositions, enumRelations, enumBelongsToAggregations,
     updateRoleRefs, loadModel, roleToQuery,
     roleToQueryInv, parentRelation
 } from './lib/schema/schema-utils';
@@ -24,6 +24,8 @@ export const schemaUtils = {
     isComplex: isComplex,
     expandSchema: expandSchema,
     enumCompositions: enumCompositions,
+    enumBelongsToAggregations: enumBelongsToAggregations,
+    enumHasAggregations: enumBelongsToAggregations,
     enumRelations: enumRelations,
     parentRelation: parentRelation,
     updateRoleRefs: updateRoleRefs,
