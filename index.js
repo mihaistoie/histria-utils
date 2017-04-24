@@ -32,7 +32,7 @@ exports.schemaUtils = {
     expandSchema: schema_utils_1.expandSchema,
     enumCompositions: schema_utils_1.enumCompositions,
     enumBelongsToAggregations: schema_utils_1.enumBelongsToAggregations,
-    enumHasAggregations: schema_utils_1.enumBelongsToAggregations,
+    enumHasAggregations: schema_utils_1.enumHasAggregations,
     enumRelations: schema_utils_1.enumRelations,
     parentRelation: schema_utils_1.parentRelation,
     updateRoleRefs: schema_utils_1.updateRoleRefs,
