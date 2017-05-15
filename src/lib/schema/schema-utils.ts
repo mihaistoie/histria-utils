@@ -355,7 +355,7 @@ function _checkRelations(schema: any, model: any) {
         rel.title = rel.title || relName;
         if (rel.type === RELATION_TYPE.belongsTo) {
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.composite;
-            if (rel.aggregationKind !== AGGREGATION_KIND.shared || rel.aggregationKind !== AGGREGATION_KIND.composite) {
+            if (rel.aggregationKind !== AGGREGATION_KIND.shared && rel.aggregationKind !== AGGREGATION_KIND.composite) {
                 throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
             }
             if (isView && rel.aggregationKind !== AGGREGATION_KIND.composite)
