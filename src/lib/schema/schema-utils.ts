@@ -398,7 +398,9 @@ function _checkRelations(schema: any, model: any) {
                     type: JSONTYPES.array,
                     items: refIdDefinition()
                 }
-
+            } else if (rel.type === RELATION_TYPE.belongsTo) {
+                rel.localFields = ['id'];
+                rel.foreignFields = [rel.invRel + 'Id'];
             } else
                 throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
 
