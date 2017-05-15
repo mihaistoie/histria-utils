@@ -354,12 +354,13 @@ function _checkRelations(schema: any, model: any) {
             throw util.format('Invalid relation "%s.%s", type is missing.', schema.name, relName);
         rel.title = rel.title || relName;
         if (rel.type === RELATION_TYPE.belongsTo) {
-            if (isView)
-                throw util.format('Invalid relation "%s.%s": a view can\'t belongs to other entity or view.', schema.name, relName);
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.composite;
-            if (rel.aggregationKind === AGGREGATION_KIND.none) {
+            if (rel.aggregationKind !== AGGREGATION_KIND.shared || rel.aggregationKind !== AGGREGATION_KIND.composite) {
                 throw util.format('Invalid relation "%s.%s", aggregationKind must be composite or shared.', schema.name, relName);
             }
+            if (isView && rel.aggregationKind !== AGGREGATION_KIND.composite)
+                throw util.format('Invalid relation "%s.%s": for a view aggregationKind must be composite.', schema.name, relName);
+
             if (rel.aggregationKind === AGGREGATION_KIND.composite) {
                 schema.meta.parent = rel.model;
             }
@@ -370,6 +371,8 @@ function _checkRelations(schema: any, model: any) {
         if (!rel.model || !model[fullClassName])
             throw util.format('Invalid relation "%s.%s", invalid remote entity.', schema.name, relName);
         let refModel = model[fullClassName];
+        if (rel.type === RELATION_TYPE.belongsTo && isView && !refModel.view)
+            throw util.format('Invalid relation "%s.%s": a view can\'t belongs to an entity.', schema.name, relName);
         let refRel = null;
         if (rel.invRel) {
             if (isView)
