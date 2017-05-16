@@ -375,9 +375,11 @@ function _checkRelations(schema: any, model: any) {
             throw util.format('Invalid relation "%s.%s": a view can\'t belongs to an entity.', schema.name, relName);
         let refRel = null;
         if (rel.invRel) {
-            if (isView)
-                throw util.format('Invalid relation "%s.%s": invRel is not allowed.', schema.name, relName);
-            if (refModel.view)
+            if (isView) {
+                if (!refModel.view)
+                    throw util.format('Invalid relation "%s.%s": invRel is not allowed.', schema.name, relName);
+            }
+            if (!isView && refModel.view)
                 throw util.format('Invalid relation "%s.%s": "%s" is a view.', schema.name, relName, rel.model);
             refModel.relations = refModel.relations || {};
             refRel = refModel.relations[rel.invRel];
@@ -399,11 +401,13 @@ function _checkRelations(schema: any, model: any) {
                     items: refIdDefinition()
                 }
             } else if (rel.type === RELATION_TYPE.belongsTo) {
+                if (!rel.invRel)
+                    throw util.format('Invalid relation "%s.%s", invRel is missing.', schema.name, relName);
                 rel.localFields = ['id'];
                 rel.foreignFields = [rel.invRel + 'Id'];
+
             } else
                 throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
-
         } else {
             let isCompositionParent = (rel.aggregationKind === AGGREGATION_KIND.composite) && (rel.type !== RELATION_TYPE.belongsTo);
             if (!refRel && (rel.aggregationKind !== AGGREGATION_KIND.none)) {
