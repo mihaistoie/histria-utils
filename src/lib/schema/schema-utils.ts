@@ -388,8 +388,8 @@ function _checkRelations(schema: any, model: any) {
             if (rel.aggregationKind === AGGREGATION_KIND.shared) {
                 throw util.format('Invalid relation "%s.%s", a view can\'t have aggregations.', schema.name, relName);
             }
-            if (rel.aggregationKind === AGGREGATION_KIND.composite) {
-                if (!refModel)
+            if (rel.type === RELATION_TYPE.hasOne && rel.aggregationKind === AGGREGATION_KIND.composite) {
+                if (refModel.view && !refRel)
                     throw util.format('Invalid relation "%s.%s": "%s" invRel is empty.', schema.name, relName, rel.model);
             }
             let lf = relName + 'Id';
