@@ -147,8 +147,8 @@ export function enumRelations(relations: any, cb: (relationName: string, relatio
 }
 
 export function parentRelation(schema: any): { relationName: string, relation: any } {
-    if (schema.meta && schema.meta.parent && schema.relations && schema.relations[schema.meta.parent]) {
-        return { relationName: schema.meta.parent, relation: schema.relations[schema.meta.parent] }
+    if (schema.meta && schema.meta.parentRelation && schema.relations && schema.relations[schema.meta.parentRelation]) {
+        return { relationName: schema.meta.parentRelation, relation: schema.relations[schema.meta.parentRelation] }
     }
     return null;
 }
@@ -363,6 +363,7 @@ function _checkRelations(schema: any, model: any) {
 
             if (rel.aggregationKind === AGGREGATION_KIND.composite) {
                 schema.meta.parent = rel.model;
+                schema.meta.parentRelation = relName;
             }
         } else {
             rel.aggregationKind = rel.aggregationKind || AGGREGATION_KIND.none;
