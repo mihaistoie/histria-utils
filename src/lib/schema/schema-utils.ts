@@ -80,31 +80,31 @@ export function updateRoleRefs(role: any, localModel: any, foreignModel: any, us
     }
 }
 export function roleToQueryInv(role: any, localModel: any): any {
-    let query: any = {}, valueIsNull = false;
+    let query: any = {}, valueIsNull = true;
     if (!role.foreignFields) return null;
     role.foreignFields.forEach((field: string, index: number) => {
         if (valueIsNull) return;
         let ff = role.localFields[index];
         let value = localModel[ff];
-        if (value === null || value === '' || value === undefined)
-            valueIsNull = true;
-        else
+        if (value !== null && value !== '' && value !== undefined) {
+            valueIsNull = false;
             query[field] = value;
+        }
     });
     if (valueIsNull) query = null;
     return query;
 }
 
 export function roleToQuery(role: any, localModel: any): any {
-    let query: any = {}, valueIsNull = false;
+    let query: any = {}, valueIsNull = true;
     if (!role.localFields) return null;
     role.localFields.forEach((field: string, index: number) => {
         let ff = role.foreignFields[index];
         let value = localModel[field];
-        if (value === null || value === '' || value === undefined)
-            valueIsNull = true;
-        else
+        if (value !== null && value !== '' && value !== undefined) {
             query[ff] = value;
+            valueIsNull = false;
+        }
     });
     if (valueIsNull) query = null;
     return query;
