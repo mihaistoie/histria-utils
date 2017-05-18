@@ -400,7 +400,7 @@ function _checkRelations(schema: any, model: any) {
                 rel.foreignFields = ['id'];
                 schema.properties[lf] = refIdDefinition();
             } else if (rel.type === RELATION_TYPE.hasMany) {
-                if (refRel.view) {
+                if (refRel && refRel.view) {
                     rel.localFields = ['id'];
                     rel.foreignFields = [rel.invRel + 'Id'];
                 } else {
