@@ -400,7 +400,7 @@ function _checkRelations(schema: any, model: any) {
                 rel.foreignFields = ['id'];
                 schema.properties[lf] = refIdDefinition();
             } else if (rel.type === RELATION_TYPE.hasMany) {
-                if (refRel && refRel.view) {
+                if (refModel && refModel.view && rel.aggregationKind === AGGREGATION_KIND.composite) {
                     rel.localFields = ['id'];
                     rel.foreignFields = [rel.invRel + 'Id'];
                 } else {
@@ -414,8 +414,14 @@ function _checkRelations(schema: any, model: any) {
             } else if (rel.type === RELATION_TYPE.belongsTo) {
                 if (!rel.invRel)
                     throw util.format('Invalid relation "%s.%s", invRel is missing.', schema.name, relName);
-                rel.localFields = ['id'];
-                rel.foreignFields = [rel.invRel + 'Id'];
+                if (refRel.type === RELATION_TYPE.hasMany) {
+                    rel.localFields = [relName + 'Id'];
+                    rel.foreignFields = ['id'];
+                    schema.properties[relName + 'Id'] = refIdDefinition();
+                } else {
+                    rel.localFields = ['id'];
+                    rel.foreignFields = [rel.invRel + 'Id'];
+                }
 
             } else
                 throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
