@@ -400,11 +400,16 @@ function _checkRelations(schema: any, model: any) {
                 rel.foreignFields = ['id'];
                 schema.properties[lf] = refIdDefinition();
             } else if (rel.type === RELATION_TYPE.hasMany) {
-                rel.localFields = [lf];
-                rel.foreignFields = ['id'];
-                schema.properties[lf] = {
-                    type: JSONTYPES.array,
-                    items: refIdDefinition()
+                if (refRel.value) {
+                    rel.localFields = ['id'];
+                    rel.foreignFields = [rel.invRel + 'Id'];
+                } else {
+                    rel.localFields = [lf];
+                    rel.foreignFields = ['id'];
+                    schema.properties[lf] = {
+                        type: JSONTYPES.array,
+                        items: refIdDefinition()
+                    }
                 }
             } else if (rel.type === RELATION_TYPE.belongsTo) {
                 if (!rel.invRel)
