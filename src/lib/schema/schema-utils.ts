@@ -147,7 +147,7 @@ export function enumRelations(relations: any, cb: (relationName: string, relatio
     });
 }
 
-export function parentRelation(schema: any): { relationName: string, relation: any } {
+export function parentRelation(schema: any): { relationName: string, relation: any } | null {
     if (schema.meta && schema.meta.parentRelation && schema.relations && schema.relations[schema.meta.parentRelation]) {
         return { relationName: schema.meta.parentRelation, relation: schema.relations[schema.meta.parentRelation] }
     }
@@ -241,12 +241,13 @@ function refIdDefinition(): any {
 
 function _load$ref(reference: string, model: any, definitions: any): any {
     let ii = reference.indexOf(DEFINITION_STRING);
-    let schemaId, defName: string;
+    let schemaId, defName: string | void;
     if (ii >= 0) {
         schemaId = reference.substr(0, ii);
         defName = reference.substr(ii + DEFINITION_STRING_LEN);
-    } else
+    } else {
         schemaId = reference;
+    }
     if (schemaId) {
         ii = schemaId.indexOf('.json');
         if (ii >= 0)

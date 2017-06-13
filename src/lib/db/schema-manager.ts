@@ -19,7 +19,7 @@ export class SchemaManager {
         that._namespaces = that._namespaces || new Map<string, any>();
         that._classes = that._classes || new Map<string, any>();
 
-        let ns: Map<string, any> = that._namespaces.get(nameSpace);
+        let ns = that._namespaces.get(nameSpace);
         if (!ns) {
             ns = new Map<string, any>();
             that._namespaces.set(nameSpace, ns)

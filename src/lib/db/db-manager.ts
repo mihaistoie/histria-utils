@@ -17,12 +17,12 @@ export class DbManager {
         that._namespaces = that._namespaces || new Map<string, { driver: DbDriver, options: any }>();
         that._namespaces.set(nameSpace, { driver: driverName, options: options });
     }
-    public store(nameSpace: string): IStore {
+    public store(nameSpace: string): IStore | null {
         const that = this;
         if (!that._namespaces) return null;
         let cfg = that._namespaces.get(nameSpace);
         if (!cfg) return null;
-        let driver: any = require('histria-db-' +  cfg.driver);
+        let driver: any = require('histria-db-' + cfg.driver);
         return <IStore>driver.store(nameSpace, cfg.options);
     }
 }

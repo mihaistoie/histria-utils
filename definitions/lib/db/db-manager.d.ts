@@ -5,6 +5,6 @@ export declare class DbManager {
     static singleton: DbManager;
     constructor();
     registerNameSpace(nameSpace: string, driverName: DbDriver, options: any): void;
-    store(nameSpace: string): IStore;
+    store(nameSpace: string): IStore | null;
 }
 export declare function dbManager(): DbManager;

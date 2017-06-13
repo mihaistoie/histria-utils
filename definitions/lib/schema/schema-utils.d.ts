@@ -17,7 +17,7 @@ export declare function enumRelations(relations: any, cb: (relationName: string,
 export declare function parentRelation(schema: any): {
     relationName: string;
     relation: any;
-};
+} | null;
 export declare function getChildrenAndRefsOfClass(schema: any, mapper: (fullClassName: string) => any): {
     children: string[];
     refs: string[];

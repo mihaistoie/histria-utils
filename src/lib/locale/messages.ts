@@ -42,6 +42,7 @@ let locales: any = {
 }
 
 export function messages(lang?: string): any {
+    lang = lang || 'en';
     return locales[lang] || locales.en;
 }
 

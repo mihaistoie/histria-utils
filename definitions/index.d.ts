@@ -9,9 +9,9 @@ export { schemaManager } from './lib/db/schema-manager';
 export { DbDriver, dbManager, DbManager } from './lib/db/db-manager';
 export declare const schemaUtils: {
     typeOfProperty: (propSchema: {
-        type?: string;
-        format?: string;
-        reference?: string;
+        type?: string | undefined;
+        format?: string | undefined;
+        reference?: string | undefined;
     }) => string;
     isHidden: (propSchema: any) => boolean;
     isReadOnly: (propSchema: any) => boolean;
@@ -24,7 +24,7 @@ export declare const schemaUtils: {
     parentRelation: (schema: any) => {
         relationName: string;
         relation: any;
-    };
+    } | null;
     updateRoleRefs: (role: any, localModel: any, foreignModel: any, useInv: boolean) => void;
     loadModel: (pathToModel: string, model: any) => Promise<void>;
     roleToQuery: (role: any, localModel: any) => any;
