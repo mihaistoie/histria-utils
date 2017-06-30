@@ -4,6 +4,8 @@ import {
     enumHasAggregations, updateRoleRefs, loadModel, roleToQuery,
     roleToQueryInv, parentRelation
 } from './lib/schema/schema-utils';
+
+import { check } from './lib/serialization/serialization';
 export { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND, JSONFORMATS, DEFAULT_PARENT_NAME } from './lib/schema/schema-consts';
 export { ApplicationError } from './lib/utils/errors';
 export { fs } from './lib/utils/promises';
@@ -43,5 +45,7 @@ export const helper = {
     format: format
 }
 
-
+export const serialization = {
+    check: check
+}
 

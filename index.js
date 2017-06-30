@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const schema_utils_1 = require("./lib/schema/schema-utils");
+const serialization_1 = require("./lib/serialization/serialization");
 var schema_consts_1 = require("./lib/schema/schema-consts");
 exports.JSONTYPES = schema_consts_1.JSONTYPES;
 exports.RELATION_TYPE = schema_consts_1.RELATION_TYPE;
@@ -46,4 +47,7 @@ exports.helper = {
     clone: helper_1.clone,
     destroy: helper_1.destroy,
     format: helper_1.format
+};
+exports.serialization = {
+    check: serialization_1.check
 };

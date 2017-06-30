@@ -36,3 +36,6 @@ export declare const helper: {
     destroy: (obj: any) => void;
     format: (...args: any[]) => string;
 };
+export declare const serialization: {
+    check: (serialization: any) => void;
+};
