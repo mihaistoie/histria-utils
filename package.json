@@ -16,7 +16,7 @@
     "mocha": "latest",
     "source-map-support": "latest",
     "tslint": "latest",
-    "typescript": "2.x.x"
+    "typescript": "^2.4.1"
   },
   "repository": {
     "type": "git",
