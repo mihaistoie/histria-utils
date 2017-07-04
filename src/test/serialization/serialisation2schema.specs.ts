@@ -93,5 +93,28 @@ describe('Schema generation', () => {
             ]
         };
         serialization.check(pattern);
+        let schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
+        assert.deepEqual(schema, {
+            proparties: {
+                id: {
+                    type: 'integer',
+                    generated: true,
+                    format: 'id'
+                },
+                name: {
+                    type: 'string'
+                },
+                engineId: {
+                    type: 'integer',
+                    generated: true,
+                    format: 'id'
+                },
+                engineCode: {
+                    type: 'string'
+                }
+            }
+        });
+
+
     });
 });

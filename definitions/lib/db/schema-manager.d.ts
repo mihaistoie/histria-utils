@@ -12,5 +12,6 @@ export declare class SchemaManager {
     isTree(fullClassName: string): boolean;
     schema(nameSpace: string, name: string): any;
     enumSchemas(nameSpace: string, cb: (schema: any) => void): void;
+    serialization2Schema(nameSpace: string, name: string, serialization: any): any;
 }
 export declare function schemaManager(): SchemaManager;

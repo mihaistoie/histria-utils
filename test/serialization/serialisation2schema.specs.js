@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert = require("assert");
 const index_1 = require("../../index");
 exports.CAR_SCHEMA = {
     type: 'object',
@@ -89,5 +90,26 @@ describe('Schema generation', () => {
             ]
         };
         index_1.serialization.check(pattern);
+        let schema = index_1.schemaManager().serialization2Schema('compositions', 'car', pattern);
+        assert.deepEqual(schema, {
+            proparties: {
+                id: {
+                    type: 'integer',
+                    generated: true,
+                    format: 'id'
+                },
+                name: {
+                    type: 'string'
+                },
+                engineId: {
+                    type: 'integer',
+                    generated: true,
+                    format: 'id'
+                },
+                engineCode: {
+                    type: 'string'
+                }
+            }
+        });
     });
 });

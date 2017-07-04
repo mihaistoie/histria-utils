@@ -79,6 +79,10 @@ export class SchemaManager {
         for (const item of ns)
             cb(item[1])
     }
+    public serialization2Schema(nameSpace: string, name: string, serialization: any): any {
+        let res = {};
+        return res;
+    }
 }
 
 
