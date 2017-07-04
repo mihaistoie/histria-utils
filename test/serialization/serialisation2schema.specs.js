@@ -92,7 +92,7 @@ describe('Schema generation', () => {
         index_1.serialization.check(pattern);
         let schema = index_1.schemaManager().serialization2Schema('compositions', 'car', pattern);
         assert.deepEqual(schema, {
-            proparties: {
+            properties: {
                 id: {
                     type: 'integer',
                     generated: true,

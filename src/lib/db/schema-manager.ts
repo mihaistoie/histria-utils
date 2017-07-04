@@ -1,4 +1,6 @@
+import { RELATION_TYPE } from '../schema/schema-consts'
 import * as schemaUtils from '../schema/schema-utils'
+import * as helper from '../utils/helper';
 import * as util from 'util'
 
 export class SchemaManager {
@@ -79,8 +81,53 @@ export class SchemaManager {
         for (const item of ns)
             cb(item[1])
     }
+    private _path2schema(schema: any, path: string): { schema: any, isArray: boolean, isRelation: boolean } | null {
+        const that = this;
+        const segments = path.split('.');
+        let cs = schema, cv = null, isRelation = false, isArray = false;
+        for (const segment of segments) {
+            if (!cs) return null;
+            cv = cs.properties[segment];
+            if (cv) {
+                isRelation = false;
+                cs = null;
+            } else {
+                let relation = cs.relations ? cs.relations[segment] : null;
+                if (!relation) return null;
+                isRelation = true;
+                isArray = relation.type === RELATION_TYPE.hasMany;
+                cv = that.schema(relation.nameSpace, relation.model);
+                if (isArray)
+                    cs = null;
+                else
+                    cs = cv;
+            }
+
+        }
+        return { schema: cv, isRelation: isRelation, isArray: isArray };
+
+    }
+    private _serializeSchema(nameSpace: string, name: string, serialization: any, res: any): void {
+        const that = this;
+        let cs = that.schema(nameSpace, name);
+        if (!cs)
+            throw util.format('Entity not found "%s.%s"', nameSpace, name);
+        serialization.properties && serialization.properties.forEach((item: any) => {
+            let fs = that._path2schema(cs, item.value);
+            if (!fs)
+                throw util.format('Invalid path "%s.%s.%s"', nameSpace, name, item.value);
+            if (item.properties) {
+
+            } else {
+                if (fs.isRelation)
+                    throw util.format('Invalid serialization for "%s.%s.%s", "properties" is missing.', nameSpace, name, item.value);
+                res[item.key] = helper.clone(fs.schema);
+            }
+        });
+    }
     public serialization2Schema(nameSpace: string, name: string, serialization: any): any {
-        let res = {};
+        const res = { properties: {} };
+        this._serializeSchema(nameSpace, name, serialization, res.properties)
         return res;
     }
 }
