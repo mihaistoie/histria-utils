@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { serialization, schemaManager } from '../../index';
 
-export const
+const
     CAR_SCHEMA = {
         type: 'object',
         name: 'car',
@@ -133,13 +133,129 @@ const
             parent: 'tree',
             parentRelation: 'parent'
         }
-    }
+    };
+const
+    CAR_REF_SCHEMA = {
+        type: 'object',
+        name: 'car',
+        nameSpace: 'ref',
+        properties: {
+            name: {
+                type: 'string'
+            },
+            id: {
+                type: 'integer',
+                generated: true,
+                format: 'id'
+            }
+
+        },
+        relations: {
+            engine: {
+                type: 'hasOne',
+                model: 'engine',
+                aggregationKind: 'composite',
+                invRel: 'car',
+                nameSpace: 'ref',
+                title: 'engine',
+                invType: 'belongsTo',
+                localFields: [
+                    'id'
+                ],
+                foreignFields: [
+                    'carId'
+                ]
+            }
+        }
+    };
+const
+    ENGINE_REF_SCHEMA = {
+        type: 'object',
+        name: 'engine',
+        nameSpace: 'ref',
+        properties: {
+            code: {
+                type: 'string'
+            },
+            id: {
+                type: 'integer',
+                generated: true,
+                format: 'id'
+            },
+            carId: {
+                type: 'integer',
+                isReadOnly: true,
+                format: 'id'
+            },
+            manufacterId: {
+                type: 'integer',
+                isReadOnly: true,
+                format: 'id'
+            }
+        },
+        relations: {
+            car: {
+                type: 'belongsTo',
+                model: 'car',
+                aggregationKind: 'composite',
+                invRel: 'engine',
+                nameSpace: 'ref',
+                title: 'car',
+                invType: 'hasOne',
+                localFields: [
+                    'carId'
+                ],
+                foreignFields: [
+                    'id'
+                ]
+            },
+            manufacter: {
+                title: 'Manufacter',
+                type: 'hasOne',
+                model: 'manufacter',
+                localFields: [
+                    'manufacterId'
+                ],
+                foreignFields: [
+                    'id'
+                ],
+                nameSpace: 'ref',
+                aggregationKind: 'none'
+            }
+        },
+        meta: {
+            parent: 'car',
+            parentRelation: 'car'
+        }
+    };
+const
+    MANUFACTER_REF_SCHEMA = {
+        type: 'object',
+        name: 'manufacter',
+        nameSpace: 'ref',
+        properties: {
+            name: {
+                type: 'string'
+            },
+            id: {
+                type: 'integer',
+                generated: true,
+                format: 'id'
+            }
+        },
+        meta: {
+        }
+    };
+
 
 describe('Schema generation', () => {
     before(() => {
         schemaManager().registerSchema(CAR_SCHEMA);
         schemaManager().registerSchema(ENGINE_SCHEMA);
         schemaManager().registerSchema(TREE_SCHEMA);
+        schemaManager().registerSchema(CAR_REF_SCHEMA);
+        schemaManager().registerSchema(ENGINE_REF_SCHEMA);
+        schemaManager().registerSchema(MANUFACTER_REF_SCHEMA);
     });
     it('Test 1', () => {
         let pattern = {
@@ -371,5 +487,149 @@ describe('Schema generation', () => {
             }
         });
     });
+    it('Test 6', () => {
+        const pattern = {
+            allOf: [
+                { '$ref': '#/definitions/tree' }
+            ],
+            definitions: {
+                tree: {
+                    properties: [
+                        'name',
+                        {
+                            leafs: 'leafs',
+                            $ref: '#/definitions/tree'
+                        }
+                    ]
+                }
+            }
+        };
+        serialization.check(pattern);
+        let schema = schemaManager().serialization2Schema('compositions', 'tree', pattern);
+        assert.deepEqual(schema, {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'integer',
+                    generated: true,
+                    format: 'id'
+                },
+                name: {
+                    type: 'string'
+                },
+                leafs: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: {
+                                type: 'integer',
+                                generated: true,
+                                format: 'id'
+                            },
+                            name: {
+                                type: 'string'
+                            },
+                            leafs: {
+                                type: 'array',
+                                items: {
+                                    $ref: '#/definitions/tree'
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            definitions: {
+                tree: {
+                    type: 'object',
+                    properties: {
+                        id: {
+                            type: 'integer',
+                            generated: true,
+                            format: 'id'
+                        },
+                        name: {
+                            type: 'string'
+                        },
+                        leafs: {
+                            type: 'array',
+                            items: {
+                                $ref: '#/definitions/tree'
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+    });
+
+    it('Test 7', () => {
+        const pattern = {
+            properties: [
+                'id',
+                {
+                    engine: 'engine',
+                    $ref: '#/definitions/engine'
+                }
+            ],
+            definitions: {
+                engine: {
+                    properties: [
+                        'id',
+                        {
+                            manufacter: 'manufacter',
+                            $ref: '#/definitions/manufacter'
+                        }
+
+                    ]
+                },
+                manufacter: {
+                    properties: [
+                        'id',
+                        'name'
+                    ]
+                }
+            }
+        };
+        serialization.check(pattern);
+        let schema = schemaManager().serialization2Schema('ref', 'car', pattern);
+        assert.deepEqual(schema, {
+            type: 'object',
+            properties: {
+                id: {
+                    format: 'id',
+                    generated: true,
+                    type: 'integer'
+                },
+                engine: {
+                    type: 'object',
+                    properties: {
+                        id: {
+                            format: 'id',
+                            generated: true,
+                            type: 'integer'
+                        },
+                        manufacter: {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    format: 'id',
+                                    generated: true,
+                                    type: 'integer'
+                                },
+                                name: {
+                                    type: 'string'
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+    });
 
 });
+
