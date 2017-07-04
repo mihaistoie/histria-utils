@@ -1,5 +1,6 @@
 import { RELATION_TYPE } from '../schema/schema-consts'
 import * as schemaUtils from '../schema/schema-utils'
+import { extractDefinitionName } from '../serialization/serialization'
 import * as helper from '../utils/helper';
 import * as util from 'util'
 
@@ -107,27 +108,59 @@ export class SchemaManager {
         return { schema: cv, isRelation: isRelation, isArray: isArray };
 
     }
-    private _serializeSchema(nameSpace: string, name: string, serialization: any, res: any): void {
+    private _serializeSchema(schema: any, root: any, rootSerialization: any, serialization: any, res: any): void {
         const that = this;
-        let cs = that.schema(nameSpace, name);
-        if (!cs)
-            throw util.format('Entity not found "%s.%s"', nameSpace, name);
         serialization.properties && serialization.properties.forEach((item: any) => {
-            let fs = that._path2schema(cs, item.value);
+            let fs = that._path2schema(schema, item.value);
             if (!fs)
-                throw util.format('Invalid path "%s.%s.%s"', nameSpace, name, item.value);
+                throw util.format('Invalid path "%s.%s.%s"', schema.nameSpace, schema.name, item.value);
             if (item.properties) {
-
+                if (!fs.isRelation)
+                    throw util.format('Invalid serialization "%s.%s.%s" is not a relation.', schema.nameSpace, schema.name, item.value);
+                let cr: any = res[item.key] = { type: 'object' };
+                if (fs.isArray) {
+                    cr.type = 'array';
+                    cr.items = { type: 'object' };
+                    cr = cr.items;
+                }
+                cr.properties = {};
+                that._serializeSchema(fs.schema, root, rootSerialization, item, cr.properties)
             } else {
-                if (fs.isRelation)
-                    throw util.format('Invalid serialization for "%s.%s.%s", "properties" is missing.', nameSpace, name, item.value);
+                if (fs.isRelation) {
+                    if (item.$ref) {
+                        let cr: any = res[item.key] = {};
+                        if (fs.isArray) {
+                            cr.type = 'array';
+                            cr.items = {};
+                            cr = cr.items;
+                        }
+                        cr.$ref = item.$ref;
+                        root.definitions = root.definitions || {};
+                        let defName = extractDefinitionName(cr.$ref);
+                        if (!root.definitions[defName]) {
+                            root.definitions[defName] = {
+                                type: 'object',
+                                properties: {}
+                            };
+                            that._serializeSchema(fs.schema, root, rootSerialization, rootSerialization.definitions[defName], root.definitions[defName].properties)
+                        }
+                        return;
+
+                    } else {
+                        throw util.format('Invalid serialization for "%s.%s.%s", "properties" is missing.', schema.nameSpace, schema.name, item.value);
+                    }
+
+                }
                 res[item.key] = helper.clone(fs.schema);
             }
         });
     }
     public serialization2Schema(nameSpace: string, name: string, serialization: any): any {
-        const res = { properties: {} };
-        this._serializeSchema(nameSpace, name, serialization, res.properties)
+        const res = { type: 'object', properties: {} };
+        let schema = this.schema(nameSpace, name);
+        if (!schema)
+            throw util.format('Entity not found "%s.%s"', nameSpace, name);
+        this._serializeSchema(schema, res, serialization, serialization, res.properties)
         return res;
     }
 }

@@ -13,7 +13,7 @@ export declare class SchemaManager {
     schema(nameSpace: string, name: string): any;
     enumSchemas(nameSpace: string, cb: (schema: any) => void): void;
     private _path2schema(schema, path);
-    private _serializeSchema(nameSpace, name, serialization, res);
+    private _serializeSchema(schema, root, rootSerialization, serialization, res);
     serialization2Schema(nameSpace: string, name: string, serialization: any): any;
 }
 export declare function schemaManager(): SchemaManager;

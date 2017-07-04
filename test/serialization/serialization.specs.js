@@ -105,8 +105,8 @@ describe('Serialization', () => {
             definitions: {
                 engine: {
                     properties: [
-                        'id',
-                        'code'
+                        { key: 'id', value: 'id' },
+                        { key: 'code', value: 'code' }
                     ]
                 }
             }
@@ -156,11 +156,13 @@ describe('Serialization', () => {
             definitions: {
                 tree: {
                     properties: [
-                        'name',
+                        { key: 'name', value: 'name' },
                         {
-                            leafs: 'leafs',
+                            key: 'leafs',
+                            value: 'leafs',
                             $ref: '#/definitions/tree'
-                        }
+                        },
+                        { key: 'id', value: 'id' }
                     ]
                 }
             }
@@ -206,11 +208,13 @@ describe('Serialization', () => {
             definitions: {
                 tree: {
                     properties: [
-                        'name',
+                        { key: 'name', value: 'name' },
                         {
-                            leafs: 'leafs',
+                            key: 'leafs',
+                            value: 'leafs',
                             $ref: '#/definitions/tree'
-                        }
+                        },
+                        { key: 'id', value: 'id' }
                     ]
                 }
             }
@@ -267,17 +271,18 @@ describe('Serialization', () => {
             definitions: {
                 engine: {
                     properties: [
-                        'id',
+                        { key: 'id', value: 'id' },
                         {
-                            manufacturer: 'manufacturer',
+                            key: 'manufacturer',
+                            value: 'manufacturer',
                             $ref: '#/definitions/manufacturer'
                         }
                     ]
                 },
                 manufacturer: {
                     properties: [
-                        'id',
-                        'name'
+                        { key: 'id', value: 'id' },
+                        { key: 'name', value: 'name' }
                     ]
                 }
             }
