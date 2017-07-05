@@ -12,6 +12,11 @@ export declare class SchemaManager {
     isTree(fullClassName: string): boolean;
     schema(nameSpace: string, name: string): any;
     enumSchemas(nameSpace: string, cb: (schema: any) => void): void;
+    propertyInfo(propertyName: string, schema: any): {
+        schema: any;
+        isArray: boolean;
+        isRelation: boolean;
+    } | null;
     private _path2schema(schema, path);
     private _serializeSchema(schema, root, rootSerialization, serialization, res);
     serialization2Schema(nameSpace: string, name: string, serialization: any): any;

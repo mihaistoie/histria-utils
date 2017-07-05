@@ -82,22 +82,31 @@ export class SchemaManager {
         for (const item of ns)
             cb(item[1])
     }
+    public propertyInfo(propertyName: string, schema: any): { schema: any, isArray: boolean, isRelation: boolean } | null {
+        const that = this;
+        let prop = schema.properties[propertyName];
+        if (prop)
+            return { schema: prop, isArray: false, isRelation: false };
+        prop = schema.relations ? schema.relations[propertyName] : null;
+        if (!prop) return null;
+        return { schema: that.schema(prop.nameSpace, prop.model), isArray: prop.type === RELATION_TYPE.hasMany, isRelation: true };
+    }
+
     private _path2schema(schema: any, path: string): { schema: any, isArray: boolean, isRelation: boolean } | null {
         const that = this;
         const segments = path.split('.');
         let cs = schema, cv = null, isRelation = false, isArray = false;
         for (const segment of segments) {
             if (!cs) return null;
-            cv = cs.properties[segment];
-            if (cv) {
+            let pi = that.propertyInfo(segment, cs);
+            if (!pi) return null;
+            cv = pi.schema;
+            if (!pi.isRelation) {
                 isRelation = false;
                 cs = null;
             } else {
-                let relation = cs.relations ? cs.relations[segment] : null;
-                if (!relation) return null;
                 isRelation = true;
-                isArray = relation.type === RELATION_TYPE.hasMany;
-                cv = that.schema(relation.nameSpace, relation.model);
+                isArray = pi.isArray;
                 if (isArray)
                     cs = null;
                 else
