@@ -238,6 +238,86 @@ const MANUFACTER_REF_SCHEMA = {
     },
     meta: {}
 };
+const ORDER_SCHEMA = {
+    type: 'object',
+    name: 'order',
+    nameSpace: 'compositions',
+    properties: {
+        totalAmount: {
+            type: 'number',
+            default: 0
+        },
+        id: {
+            type: 'integer',
+            generated: true,
+            format: 'id'
+        }
+    },
+    relations: {
+        items: {
+            type: 'hasMany',
+            model: 'orderItem',
+            aggregationKind: 'composite',
+            invRel: 'order',
+            nameSpace: 'compositions',
+            title: 'items',
+            invType: 'belongsTo',
+            localFields: [
+                'id'
+            ],
+            foreignFields: [
+                'orderId'
+            ]
+        }
+    },
+    meta: {}
+};
+const ORDERITEM_SCHEMA = {
+    type: 'object',
+    name: 'orderItem',
+    nameSpace: 'compositions',
+    properties: {
+        amount: {
+            type: 'number',
+            default: 0
+        },
+        loaded: {
+            type: 'boolean',
+            default: false
+        },
+        id: {
+            type: 'integer',
+            generated: true,
+            format: 'id'
+        },
+        orderId: {
+            type: 'integer',
+            isReadOnly: true,
+            format: 'id'
+        }
+    },
+    relations: {
+        order: {
+            type: 'belongsTo',
+            model: 'order',
+            aggregationKind: 'composite',
+            invRel: 'items',
+            nameSpace: 'compositions',
+            title: 'order',
+            invType: 'hasMany',
+            localFields: [
+                'orderId'
+            ],
+            foreignFields: [
+                'id'
+            ]
+        }
+    },
+    meta: {
+        parent: 'order',
+        parentRelation: 'order'
+    }
+};
 describe('Schema generation', () => {
     before(() => {
         index_1.schemaManager().registerSchema(CAR_SCHEMA);
@@ -246,6 +326,8 @@ describe('Schema generation', () => {
         index_1.schemaManager().registerSchema(CAR_REF_SCHEMA);
         index_1.schemaManager().registerSchema(ENGINE_REF_SCHEMA);
         index_1.schemaManager().registerSchema(MANUFACTER_REF_SCHEMA);
+        index_1.schemaManager().registerSchema(ORDER_SCHEMA);
+        index_1.schemaManager().registerSchema(ORDERITEM_SCHEMA);
     });
     it('Test 1', () => {
         let pattern = {
@@ -607,6 +689,57 @@ describe('Schema generation', () => {
                                 name: {
                                     type: 'string'
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+    it('Test 8', () => {
+        const pattern = {
+            properties: [
+                'totalAmount',
+                {
+                    items: 'items',
+                    $ref: '#/definitions/orderitem'
+                },
+            ],
+            definitions: {
+                orderitem: {
+                    properties: [
+                        'amount'
+                    ]
+                }
+            }
+        };
+        index_1.serialization.check(pattern);
+        let schema = index_1.schemaManager().serialization2Schema('compositions', 'order', pattern);
+        assert.deepEqual(schema, {
+            type: 'object',
+            properties: {
+                id: {
+                    format: 'id',
+                    generated: true,
+                    type: 'integer'
+                },
+                totalAmount: {
+                    type: 'number',
+                    default: 0
+                },
+                items: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: {
+                                format: 'id',
+                                generated: true,
+                                type: 'integer'
+                            },
+                            amount: {
+                                type: 'number',
+                                default: 0
                             }
                         }
                     }
