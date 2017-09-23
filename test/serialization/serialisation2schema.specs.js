@@ -8,7 +8,8 @@ const CAR_SCHEMA = {
     nameSpace: 'compositions',
     properties: {
         name: {
-            type: 'string'
+            type: 'string',
+            title: 'Name'
         },
         id: {
             type: 'integer',
@@ -40,7 +41,8 @@ const ENGINE_SCHEMA = {
     nameSpace: 'compositions',
     properties: {
         code: {
-            type: 'string'
+            type: 'string',
+            title: 'Code'
         },
         id: {
             type: 'integer',
@@ -81,7 +83,8 @@ const TREE_SCHEMA = {
     nameSpace: 'compositions',
     properties: {
         name: {
-            type: 'string'
+            type: 'string',
+            title: 'Name'
         },
         id: {
             type: 'integer',
@@ -137,7 +140,8 @@ const CAR_REF_SCHEMA = {
     nameSpace: 'ref',
     properties: {
         name: {
-            type: 'string'
+            type: 'string',
+            title: 'Name'
         },
         id: {
             type: 'integer',
@@ -169,7 +173,8 @@ const ENGINE_REF_SCHEMA = {
     nameSpace: 'ref',
     properties: {
         code: {
-            type: 'string'
+            type: 'string',
+            title: 'Code'
         },
         id: {
             type: 'integer',
@@ -228,7 +233,8 @@ const MANUFACTER_REF_SCHEMA = {
     nameSpace: 'ref',
     properties: {
         name: {
-            type: 'string'
+            type: 'string',
+            title: 'Name'
         },
         id: {
             type: 'integer',
@@ -349,7 +355,8 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Name'
                 },
                 engineId: {
                     type: 'integer',
@@ -357,7 +364,8 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 engineCode: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Code'
                 }
             }
         });
@@ -380,10 +388,12 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Name'
                 },
                 code: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Code'
                 }
             }
         });
@@ -412,7 +422,8 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Name'
                 },
                 engineInfo: {
                     type: 'object',
@@ -423,7 +434,8 @@ describe('Schema generation', () => {
                             format: 'id'
                         },
                         code: {
-                            type: 'string'
+                            type: 'string',
+                            title: 'Code'
                         }
                     }
                 }
@@ -459,7 +471,8 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Name'
                 },
                 engine: {
                     type: 'object',
@@ -470,7 +483,8 @@ describe('Schema generation', () => {
                             format: 'id'
                         },
                         code: {
-                            type: 'string'
+                            type: 'string',
+                            title: 'Code'
                         }
                     }
                 }
@@ -509,6 +523,7 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
+                    title: 'Name',
                     type: 'string'
                 },
                 leafs: {
@@ -522,6 +537,7 @@ describe('Schema generation', () => {
                                 format: 'id'
                             },
                             name: {
+                                title: 'Name',
                                 type: 'string'
                             },
                             leafs: {
@@ -544,7 +560,8 @@ describe('Schema generation', () => {
                             format: 'id'
                         },
                         name: {
-                            type: 'string'
+                            type: 'string',
+                            title: 'Name'
                         },
                         leafs: {
                             type: 'array',
@@ -585,7 +602,8 @@ describe('Schema generation', () => {
                     format: 'id'
                 },
                 name: {
-                    type: 'string'
+                    type: 'string',
+                    title: 'Name'
                 },
                 leafs: {
                     type: 'array',
@@ -598,7 +616,8 @@ describe('Schema generation', () => {
                                 format: 'id'
                             },
                             name: {
-                                type: 'string'
+                                type: 'string',
+                                title: 'Name'
                             },
                             leafs: {
                                 type: 'array',
@@ -620,7 +639,8 @@ describe('Schema generation', () => {
                             format: 'id'
                         },
                         name: {
-                            type: 'string'
+                            type: 'string',
+                            title: 'Name'
                         },
                         leafs: {
                             type: 'array',
@@ -687,7 +707,8 @@ describe('Schema generation', () => {
                                     type: 'integer'
                                 },
                                 name: {
-                                    type: 'string'
+                                    type: 'string',
+                                    title: 'Name'
                                 }
                             }
                         }
