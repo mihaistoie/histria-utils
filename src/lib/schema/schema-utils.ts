@@ -7,7 +7,6 @@ import * as path from 'path';
 
 import { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND } from './schema-consts';
 import { merge, clone } from '../utils/helper'
-import * as promises from '../utils/promises'
 
 import { ApplicationError } from '../utils/errors'
 
@@ -327,16 +326,14 @@ function _expand$Ref(item: any, callStack: string[], model: any, definitions: an
 
 
 async function loadJsonFromFile(jsonFile: string): Promise<any> {
-    let data = await promises.fs.readFile(jsonFile);
-    let parsedJson = null;
+    const data = await util.promisify(fs.readFile)(jsonFile);
     try {
-        parsedJson = JSON.parse(data.toString());
+        return JSON.parse(data.toString());
     } catch (ex) {
         console.log(jsonFile);
         throw ex;
 
     }
-    return parsedJson;
 }
 
 function _checkModel(schema: any, model: any) {
@@ -498,16 +495,14 @@ function _checkRelations(schema: any, model: any) {
 
 
 export async function loadModel(pathToModel: string, model: any): Promise<void> {
-    let files = await promises.fs.readdir(pathToModel);
-    let stats: fs.Stats[];
-    let folders = [];
-    stats = await Promise.all(files.map((fileName) => {
-        let fn = path.join(pathToModel, fileName);
-        return promises.fs.lstat(fn);
+    const files = await util.promisify(fs.readdir)(pathToModel);
+    const folders = [];
+    const stats: fs.Stats[] = await Promise.all(files.map((fileName) => {
+        return util.promisify(fs.lstat)(path.join(pathToModel, fileName));
     }));
     let jsonFiles: string[] = [];
     stats.forEach((stat, index) => {
-        let fn = path.join(pathToModel, files[index]);
+        const fn = path.join(pathToModel, files[index]);
         if (stat.isDirectory()) return;
         if (path.extname(fn) === '.json') {
             jsonFiles.push(fn);

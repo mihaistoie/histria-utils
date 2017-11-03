@@ -1,6 +1,5 @@
 export { JSONTYPES, RELATION_TYPE, AGGREGATION_KIND, JSONFORMATS, DEFAULT_PARENT_NAME } from './lib/schema/schema-consts';
 export { ApplicationError } from './lib/utils/errors';
-export { fs } from './lib/utils/promises';
 export { messages } from './lib/locale/messages';
 export { locale } from './lib/locale/locale';
 export { findInArray, findInMap, filter } from './lib/filter/filter';
