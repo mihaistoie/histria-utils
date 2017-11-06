@@ -355,10 +355,10 @@ function _checkHooks(schema: any, model: any) {
             const refModel = model[fullClassName];
             if (!refModel)
                 throw util.format('Invalid hook model "%s", entity not found.', fullClassName);
-            if (!hook.property)
-                throw util.format('Invalid hook definition for class "%s", property is missing.', schema.name);
-            if (!refModel.relation || refModel.relation[hook.property])
-                throw util.format('Invalid hook definition for class "%s", relation "%s.%s" not found.', schema.name, fullClassName, hook.property);
+            if (!hook.relation)
+                throw util.format('Invalid hook definition for class "%s", relation is missing.', schema.name);
+            if (!refModel.relation || refModel.relation[hook.relation])
+                throw util.format('Invalid hook definition for class "%s", relation "%s.%s" not found.', schema.name, fullClassName, hook.relation);
         }
     });
 }
