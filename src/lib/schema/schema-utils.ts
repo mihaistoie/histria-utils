@@ -343,6 +343,26 @@ function _checkModel(schema: any, model: any) {
 }
 
 
+function _checkHooks(schema: any, model: any) {
+    let isView = schema.view;
+    schema.hooks && schema.hooks.forEach((hook: any) => {
+        hook.type = hook.type || 'factory';
+        if (hook.type === 'factory') {
+            if (!hook.model)
+                throw util.format('Invalid hook definition for class "%s", model is missing.', schema.name);
+            hook.nameSpace = hook.nameSpace || schema.nameSpace;
+            const fullClassName = hook.nameSpace + '.' + hook.model;
+            const refModel = model[fullClassName];
+            if (!refModel)
+                throw util.format('Invalid hook model "%s", entity not found.', fullClassName);
+            if (!hook.property)
+                throw util.format('Invalid hook definition for class "%s", property is missing.', schema.name);
+            if (!refModel.relation || refModel.relation[hook.property])
+                throw util.format('Invalid hook definition for class "%s", relation "%s.%s" not found.', schema.name, fullClassName, hook.property);
+        }
+    });
+}
+
 function _checkRelations(schema: any, model: any) {
     // schema.meta.parent = null;
     let isView = schema.view;
@@ -529,6 +549,9 @@ export async function loadModel(pathToModel: string, model: any): Promise<void> 
     });
     schemas.forEach(schema => {
         _checkRelations(schema, model);
+    });
+    schemas.forEach(schema => {
+        _checkHooks(schema, model);
     });
 
 }
