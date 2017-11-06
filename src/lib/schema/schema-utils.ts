@@ -359,7 +359,7 @@ function _checkHooks(schema: any, model: any) {
                 throw util.format('Invalid hook definition for class "%s", relation is missing.', schema.name);
             if (!hook.property)
                 throw util.format('Invalid hook definition for class "%s", property is missing.', schema.name);
-            if (!refModel.relations || refModel.relations[hook.relation])
+            if (!refModel.relations || !refModel.relations[hook.relation])
                 throw util.format('Invalid hook definition for class "%s", relation "%s.%s" not found.', schema.name, fullClassName, hook.relation);
         }
     });
