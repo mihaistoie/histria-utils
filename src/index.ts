@@ -35,13 +35,14 @@ export const schemaUtils = {
     roleToQueryInv: roleToQueryInv
 }
 
-import { merge, clone, destroy, format } from './lib/utils/helper';
+import { merge, clone, destroy, format, valuesByPath } from './lib/utils/helper';
 
 export const helper = {
     merge: merge,
     clone: clone,
     destroy: destroy,
-    format: format
+    format: format,
+    valuesByPath: valuesByPath
 }
 
 export const serialization = {

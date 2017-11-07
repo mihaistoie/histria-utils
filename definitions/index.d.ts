@@ -34,6 +34,7 @@ export declare const helper: {
     clone: (src: any) => any;
     destroy: (obj: any) => void;
     format: (...args: any[]) => string;
+    valuesByPath: (path: string, value: any, res: any[]) => void;
 };
 export declare const serialization: {
     check: (serialization: any) => void;

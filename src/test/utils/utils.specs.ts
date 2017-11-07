@@ -84,6 +84,7 @@ describe('Helper', () => {
         ]
     };
 
+
     it('Clone complex array', () => {
         let nt = helper.clone(topic);
         nt = JSON.parse(JSON.stringify(topic));
@@ -127,6 +128,42 @@ describe('Helper', () => {
     });
     it('Clone undefined', () => {
         assert.equal(helper.clone(undefined), undefined, 'clone (7)');
+    });
+
+
+    it('Extract values (1)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('item', null, res)
+        assert.equal(res.length, 0, 'Extract values (1)');
+    });
+
+    it('Extract values (2)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('item', undefined, res)
+        assert.equal(res.length, 0, 'Extract values (2)');
+    });
+
+    it('Extract values (3)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('item', {}, res)
+        assert.equal(res.length, 0, 'Extract values (3)');
+    });
+
+    it('Extract values (4)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('address', topic[0], res)
+        assert.equal(res.length, 1, 'Extract values (4)');
+    });
+    it('Extract values (5)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('hobbies', topic[1], res)
+        assert.equal(res.length, 3, 'Extract values (5)');
+    });
+
+    it('Extract values (6)', () => {
+        let res: any[] = [];
+        helper.valuesByPath('car.engine', co, res)
+        assert.equal(res.length, 2, 'Extract values (3)');
     });
 
 });

@@ -53,7 +53,7 @@ const
         });
 
     },
-    _clone = (src: any) => {
+    _clone = (src: any): any => {
         if (!src) return src;
         let tt = typeof src;
         if (tt === 'object') {
@@ -70,10 +70,34 @@ const
             let n = parseInt(num, 10);
             return args[n + 1];
         });
-    };
+    },
+    _valuesByPath = (path: string, value: any, res: any[]): void => {
+        if (!value) return;
+        if (!path) {
+            if (value) res.push(value);
+            return;
+        }
+        let ii = path.indexOf('.');
+        if (ii >= 0) {
+            value = value[path.substr(0, ii)];
+            path = path.substr(ii + 1);
+
+        } else {
+            value = value[path];
+            path = '';
+        }
+        if (value) {
+            if (Array.isArray(value)) {
+                value.forEach((item: any) => {
+                    _valuesByPath(path, item, res);
+                });
+            } else _valuesByPath(path, value, res);
+        }
+    }
 
 
 export const merge = _merge;
 export const clone = _clone;
 export const destroy = _destroyObjects;
 export const format = _format;
+export const valuesByPath = _valuesByPath;

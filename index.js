@@ -44,7 +44,8 @@ exports.helper = {
     merge: helper_1.merge,
     clone: helper_1.clone,
     destroy: helper_1.destroy,
-    format: helper_1.format
+    format: helper_1.format,
+    valuesByPath: helper_1.valuesByPath
 };
 exports.serialization = {
     check: serialization_1.check
