@@ -449,9 +449,9 @@ function _checkRelations(schema: any, model: any) {
             if (isView && !refModel.view && rel.aggregationKind === AGGREGATION_KIND.composite && rel.type === RELATION_TYPE.hasOne) {
 
                 if (rel.type === RELATION_TYPE.hasOne && !refModel.view) {
-                    refModel.viewsOfMe = refModel.viewsOfMe || {};
-                    refModel.viewsOfMe[fullClassName] = {
-                        nameSpace: rel.nameSpace || schema.nameSpace,
+                    refModel.viewsOfMe = schema.viewsOfMe || {};
+                    refModel.viewsOfMe[schema.nameSpace + '.' + schema.name] = {
+                        nameSpace: schema.nameSpace,
                         model: schema.name,
                         relation: relName,
                         localFields: rel.localFields.slice(),
