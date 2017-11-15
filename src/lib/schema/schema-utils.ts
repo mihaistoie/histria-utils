@@ -445,6 +445,21 @@ function _checkRelations(schema: any, model: any) {
 
             } else
                 throw util.format('Invalid relation "%s.%s", invalid relation type.', schema.name, relName);
+
+            if (isView && !refModel.view && rel.aggregationKind === AGGREGATION_KIND.composite && rel.type === RELATION_TYPE.hasOne) {
+
+                if (rel.type === RELATION_TYPE.hasOne && !refModel.view) {
+                    refModel.viewsOfMe = refModel.viewsOfMe || {};
+                    refModel.viewsOfMe[fullClassName] = {
+                        nameSpace: rel.nameSpace || schema.nameSpace,
+                        model: schema.name,
+                        relation: relName,
+                        localFields: rel.localFields.slice(),
+                        foreignFields: rel.foreignFields.slice()
+                    }
+                }
+            }
+
         } else {
             let isCompositionParent = (rel.aggregationKind === AGGREGATION_KIND.composite) && (rel.type !== RELATION_TYPE.belongsTo);
             if (!refRel && (rel.aggregationKind !== AGGREGATION_KIND.none)) {
