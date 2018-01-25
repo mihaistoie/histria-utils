@@ -6,7 +6,6 @@ var ts = require('gulp-typescript');
 let tslint = require('gulp-tslint');
 
 
-
 gulp.task('clean', () => {
     return del([
         'definitions/',
@@ -20,18 +19,7 @@ gulp.task('clean', () => {
 
 });
 
-
-gulp.task('ts', ['tslint'], () => {
-    let tsProject = ts.createProject(path.resolve('./tsconfig.json'));
-    let tsResult = gulp.src(['./src/**/*.ts', '!./src/test/**']).pipe(tsProject());
-    return merge([
-        tsResult.dts.pipe(gulp.dest('./definitions')),
-        tsResult.js.pipe(gulp.dest(path.resolve('./')))
-    ]);
-
-});
-
-gulp.task('tslint', ['clean'], () => {
+gulp.task('tslint', () => {
     return gulp.src("src/**/*.ts")
         .pipe(tslint({
             formatter: "verbose"
@@ -40,13 +28,25 @@ gulp.task('tslint', ['clean'], () => {
 });
 
 
-gulp.task('test', ['ts'], function () {
-    var tsProject = ts.createProject(path.resolve('./tsconfig.json'));
-    var tsResult = gulp.src(['./src/test/**']).pipe(tsProject());
-    tsResult.js.pipe(gulp.dest(path.resolve('./test')))
+gulp.task('ts', () => {
+    const tsProject = ts.createProject(path.resolve('./tsconfig.json'));
+    const tsResult = gulp.src(['./src/**/*.ts', '!./src/test/**']).pipe(tsProject());
+    return merge([
+        tsResult.dts.pipe(gulp.dest('./definitions')),
+        tsResult.js.pipe(gulp.dest(path.resolve('./')))
+    ]);
+
 });
 
 
 
-gulp.task('build', ['test']);
-gulp.task('default', ['build']);
+gulp.task('test', () => {
+    const tsProject = ts.createProject(path.resolve('./tsconfig.json'));
+    const tsResult = gulp.src(['./src/test/**']).pipe(tsProject());
+    return tsResult.js.pipe(gulp.dest(path.resolve('./test')))
+});
+
+
+
+gulp.task('build', gulp.series('clean', 'tslint', 'ts', 'test', (done) => { done() }));
+gulp.task('default', gulp.series('build', (done) => { done() }));

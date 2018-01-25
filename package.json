@@ -8,7 +8,7 @@
     "@types/mocha": "latest",
     "@types/node": "latest",
     "del": "latest",
-    "gulp": "latest",
+    "gulp": "^4.0.0",
     "gulp-tslint": "latest",
     "gulp-typescript": "latest",
     "merge2": "latest",
