@@ -38,8 +38,6 @@ gulp.task('ts', () => {
 
 });
 
-
-
 gulp.task('test', () => {
     const tsProject = ts.createProject(path.resolve('./tsconfig.json'));
     const tsResult = gulp.src(['./src/test/**']).pipe(tsProject());
