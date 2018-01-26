@@ -46,5 +46,5 @@ gulp.task('test', () => {
 
 
 
-gulp.task('build', gulp.series('clean', 'tslint', 'ts', 'test', (done) => { done() }));
-gulp.task('default', gulp.series('build', (done) => { done() }));
+gulp.task('build', gulp.series('clean', 'tslint', 'ts', 'test'));
+gulp.task('default', gulp.series('build'));
