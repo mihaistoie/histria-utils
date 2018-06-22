@@ -485,6 +485,7 @@ function _checkRelations(schema: any, model: any) {
             }
 
             if (!rel.localFields || !rel.foreignFields) {
+
                 if (rel.type === RELATION_TYPE.hasOne) {
                     if (rel.aggregationKind === AGGREGATION_KIND.none) {
                         rel.localFields = [relName + 'Id'];
@@ -534,7 +535,7 @@ function _checkRelations(schema: any, model: any) {
 export async function loadModel(pathToModel: string, model: any): Promise<void> {
     const files = await util.promisify(fs.readdir)(pathToModel);
     const folders = [];
-    const stats: fs.Stats[] = await Promise.all(files.map((fileName) => {
+    const stats: fs.Stats[] = await Promise.all(files.map((fileName: string) => {
         return util.promisify(fs.lstat)(path.join(pathToModel, fileName));
     }));
     let jsonFiles: string[] = [];

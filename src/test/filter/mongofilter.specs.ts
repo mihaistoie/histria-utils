@@ -99,6 +99,25 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 2);
     });
+    it('hobbies of photography, cooking, or biking count of 3', function () {
+        let res = filter({
+            'hobbies.name': {
+                $in: ['photography', 'cooking', 'biking']
+            }
+
+        }, topic);
+        assert.equal(res.length, 2);
+    });
+    it('hobbies of photography, cooking, or biking count of 4', function () {
+        let res = filter({
+            'hobbies.name': {
+                $in: ['XXX']
+            }
+
+        }, topic);
+        assert.equal(res.length, 0);
+    });
+
     it('Complex filter count of 2', function () {
         let res = filter({
             hobbies: {
@@ -230,10 +249,10 @@ describe('Mongo filter', () => {
         }];
 
         it('can filter people', function () {
-            let results = filter({ 'person': { $elemMatch: { 'gender': 'female', 'age': { '$lt': 30 } } } }, couples);
+            let results = filter({ person: { $elemMatch: { 'gender': 'female', 'age': { '$lt': 30 } } } }, couples);
             assert.equal(results[0].name, 'SMITH');
 
-            results = filter({ 'person': { $elemMatch: { 'gender': 'male', 'age': { '$lt': 30 } } } }, [couples[0]]);
+            results = filter({ person: { $elemMatch: { 'gender': 'male', 'age': { '$lt': 30 } } } }, [couples[0]]);
             assert.equal(results.length, 0);
         });
 
