@@ -769,3 +769,5 @@ describe('Schema generation', () => {
         });
     });
 });
+
+//# sourceMappingURL=serialisation2schema.specs.js.map

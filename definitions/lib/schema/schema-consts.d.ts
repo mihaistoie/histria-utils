@@ -1,4 +1,5 @@
 export declare const JSONTYPES: any;
+export declare const DEFAULT_KEY_SEP = "~";
 export declare const DEFAULT_PARENT_NAME = "owner";
 export declare const RELATION_TYPE: {
     hasOne: string;

@@ -17,8 +17,8 @@ export declare class SchemaManager {
         isArray: boolean;
         isRelation: boolean;
     } | null;
-    private _path2schema(schema, path);
-    private _serializeSchema(schema, root, rootSerialization, serialization, res);
+    private _path2schema;
+    private _serializeSchema;
     serialization2Schema(nameSpace: string, name: string, serialization: any): any;
 }
 export declare function schemaManager(): SchemaManager;

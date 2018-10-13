@@ -290,3 +290,5 @@ describe('Serialization', () => {
         assert.deepEqual(pattern, excepted);
     });
 });
+
+//# sourceMappingURL=serialization.specs.js.map

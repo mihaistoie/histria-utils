@@ -11,6 +11,8 @@ export const JSONTYPES: any = {
     id: 'id'
 }
 
+
+export const DEFAULT_KEY_SEP = '~';
 export const DEFAULT_PARENT_NAME = 'owner';
 
 export const RELATION_TYPE = {

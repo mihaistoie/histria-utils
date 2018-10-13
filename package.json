@@ -14,8 +14,9 @@
     "merge2": "latest",
     "mocha": "latest",
     "source-map-support": "latest",
+    "gulp-sourcemaps": "latest",
     "tslint": "latest",
-    "typescript": "latest"
+    "typescript": "^3.1.1"
   },
   "repository": {
     "type": "git",

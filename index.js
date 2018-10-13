@@ -50,3 +50,5 @@ exports.helper = {
 exports.serialization = {
     check: serialization_1.check
 };
+
+//# sourceMappingURL=index.js.map
