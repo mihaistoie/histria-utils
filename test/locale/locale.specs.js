@@ -8,6 +8,8 @@ describe('Locale', () => {
         assert.equal(usLocale.date.daySep, '-');
         const usMessages = index_1.messages();
         assert.notEqual(usMessages, null);
+        const roMessages = index_1.messages('ro');
+        assert.deepEqual(usMessages, roMessages);
     });
 });
 

@@ -111,14 +111,13 @@ describe('Helper', () => {
     });
 
     it('Clone null', () => {
-        let nt = helper.clone(null);
-        assert.deepEqual(nt, null, 'clone (3)');
+        assert.deepEqual(helper.clone(null), null, 'clone (3)');
     });
     it('Clone simple object ', () => {
-        let so: any = { a: 5, b: [null] }
+        let so: any = { a: 5, b: [null, undefined] }
         so.c = null;
         let nt = helper.clone(so);
-        assert.deepEqual(so, so, 'clone (4)');
+        assert.deepEqual(nt, so, 'clone (4)');
     });
     it('Clone number', () => {
         assert.equal(helper.clone(10), 10, 'clone (5)');
@@ -126,6 +125,10 @@ describe('Helper', () => {
     it('Clone string', () => {
         assert.equal(helper.clone('My name is Mihai'), 'My name is Mihai', 'clone (6)');
     });
+    it('Clone boolean', () => {
+        assert.equal(helper.clone(false), false);
+    });
+
     it('Clone undefined', () => {
         assert.equal(helper.clone(undefined), undefined, 'clone (7)');
     });
@@ -164,6 +167,16 @@ describe('Helper', () => {
         let res: any[] = [];
         helper.valuesByPath('car.engine', co, res)
         assert.equal(res.length, 2, 'Extract values (3)');
+    });
+
+    it('Extract values (7)', () => {
+        let res: any[] = [];
+        let a = { b: 1 }
+        helper.valuesByPath('', a, res);
+        assert.deepEqual(res, [a], 'Extract values (7)');
+        res = [];
+        helper.valuesByPath('', null, res);
+        assert.deepEqual(res, [], 'Extract values (7)');
     });
 
 });

@@ -14,10 +14,9 @@ const
         });
     },
     _cloneObject = (src: any): any => {
-        if (src === null || src === undefined) return src;
-        let res: any = {};
+        const res: any = {};
         Object.keys(src).forEach(propertyName => {
-            let item = src[propertyName];
+            const item = src[propertyName];
             if (item) {
                 if (Array.isArray(item)) {
                     res[propertyName] = _cloneArray(item);
@@ -33,7 +32,7 @@ const
     _merge = (src: any, dst: any): void => {
         if (!src) return;
         for (let p in src) {
-            let pv = src[p];
+            const pv = src[p];
             let ov = dst[p];
             if (pv === null) continue;
             if (typeof pv === 'object' && !Array.isArray(pv)) {
@@ -74,7 +73,7 @@ const
     _valuesByPath = (path: string, value: any, res: any[]): void => {
         if (!value) return;
         if (!path) {
-            if (value) res.push(value);
+            res.push(value);
             return;
         }
         let ii = path.indexOf('.');
