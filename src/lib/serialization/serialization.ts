@@ -50,7 +50,7 @@ function _checkSerialization(serialization: any, definitions: any, stack: string
                     }
 
                 } else
-                    throw util.format('Invalid serialization  "%s"', JSON.stringify(item));
+                    throw util.format('Invalid serialization "%s"', JSON.stringify(item));
             }
             if (item.properties) {
                 if (ref) stack.push(ref);

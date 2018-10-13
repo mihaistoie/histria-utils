@@ -16,6 +16,7 @@
     "source-map-support": "latest",
     "gulp-sourcemaps": "latest",
     "tslint": "latest",
+    "nyc": "latest",
     "typescript": "^3.1.1"
   },
   "repository": {
@@ -24,6 +25,6 @@
   },
   "types": "./definitions/index.d.ts",
   "scripts": {
-    "test": "mocha  test/**/*.specs.js"
+    "test": "nyc mocha  test/**/*.specs.js"
   }
 }

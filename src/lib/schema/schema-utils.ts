@@ -222,12 +222,12 @@ export function isTree(schema: any): boolean {
 }
 
 
-function idDefinition(): any {
-    return { type: JSONTYPES.integer, generated: true, format: JSONTYPES.id };
+function idDefinition(persistent: boolean): any {
+    return { type: JSONTYPES.integer, generated: true, format: JSONTYPES.id, transient: !persistent };
 }
 
-function refIdDefinition(): any {
-    return { type: JSONTYPES.integer, isReadOnly: true, format: JSONTYPES.id };
+function refIdDefinition(persistent: boolean): any {
+    return { type: JSONTYPES.integer, isReadOnly: true, format: JSONTYPES.id, transient: !persistent };
 }
 
 
@@ -338,10 +338,23 @@ async function loadJsonFromFile(jsonFile: string): Promise<any> {
 
 function _checkModel(schema: any, model: any) {
     schema.properties = schema.properties || {};
-    schema.properties.id = idDefinition();
+    if (!schema.primaryKey || schema.view) {
+        schema.properties.id = idDefinition(schema.view);
+        schema.primaryKey = ['id']
+    }
     schema.meta = schema.meta || {};
+    if (!schema.primaryKey)
+        throw util.format('Invalid schema "%s", primarykey is missing.', schema.name);
+    if (typeof schema.primaryKey === 'string') {
+        const pkString: string = schema.primaryKey;
+        const pk = pkString.split(',').map((key) => { return key.trim(); });
+        schema.primaryKey = pk;
+    }
+
 }
 
+
+_checkModel
 
 function _checkHooks(schema: any, model: any) {
     let isView = schema.view;
@@ -398,11 +411,15 @@ function _checkRelations(schema: any, model: any) {
         let refRel = null;
         if (rel.invRel) {
             if (isView) {
-                if (!refModel.view)
+                if (!refModel.view) {
+                    // A view (local) can't have a reference to a persistent model (foreign)
                     throw util.format('Invalid relation "%s.%s": invRel is not allowed.', schema.name, relName);
+                }
             }
-            if (!isView && refModel.view)
+            if (!isView && refModel.view) {
+                // A persistent model (local) can't have a reference to a view (foreign)
                 throw util.format('Invalid relation "%s.%s": "%s" is a view.', schema.name, relName, rel.model);
+            }
             refModel.relations = refModel.relations || {};
             refRel = refModel.relations[rel.invRel];
         }
@@ -418,7 +435,7 @@ function _checkRelations(schema: any, model: any) {
             if (rel.type === RELATION_TYPE.hasOne) {
                 rel.localFields = [lf];
                 rel.foreignFields = ['id'];
-                schema.properties[lf] = refIdDefinition();
+                schema.properties[lf] = refIdDefinition(true);
             } else if (rel.type === RELATION_TYPE.hasMany) {
                 if (refModel && refModel.view && rel.aggregationKind === AGGREGATION_KIND.composite) {
                     rel.localFields = ['id'];
@@ -428,7 +445,7 @@ function _checkRelations(schema: any, model: any) {
                     rel.foreignFields = ['id'];
                     schema.properties[lf] = {
                         type: JSONTYPES.array,
-                        items: refIdDefinition()
+                        items: refIdDefinition(true)
                     }
                 }
             } else if (rel.type === RELATION_TYPE.belongsTo) {
@@ -437,7 +454,7 @@ function _checkRelations(schema: any, model: any) {
                 if (refRel.type === RELATION_TYPE.hasMany) {
                     rel.localFields = [relName + 'Id'];
                     rel.foreignFields = ['id'];
-                    schema.properties[relName + 'Id'] = refIdDefinition();
+                    schema.properties[relName + 'Id'] = refIdDefinition(true);
                 } else {
                     rel.localFields = ['id'];
                     rel.foreignFields = [rel.invRel + 'Id'];
@@ -485,27 +502,7 @@ function _checkRelations(schema: any, model: any) {
             }
 
             if (!rel.localFields || !rel.foreignFields) {
-
-                if (rel.type === RELATION_TYPE.hasOne) {
-                    if (rel.aggregationKind === AGGREGATION_KIND.none) {
-                        rel.localFields = [relName + 'Id'];
-                        rel.foreignFields = ['id'];
-                    } else {
-                        // ref rel is belongsTo
-                        if (refRel) {
-                            rel.localFields = ['id'];
-                            rel.foreignFields = [rel.invRel + 'Id'];
-                        }
-                    }
-                } else if (rel.type === RELATION_TYPE.belongsTo) {
-                    rel.localFields = [relName + 'Id'];
-                    rel.foreignFields = ['id'];
-                } else if (rel.type === RELATION_TYPE.hasMany) {
-                    if (refRel) {
-                        rel.localFields = ['id'];
-                        rel.foreignFields = [rel.invRel + 'Id'];
-                    }
-                }
+                throw util.format('Invalid relation "%s.%s", localFields and foreignFields must be defined.', schema.name, relName);
             }
             if (rel.foreignFields.length !== rel.localFields.length)
                 throw util.format('Invalid relation "%s.%s", #foreignFields != #localFields.', schema.name, relName);
@@ -514,9 +511,9 @@ function _checkRelations(schema: any, model: any) {
                 let rf = rel.foreignFields[index];
                 let crf = lf === 'id', clf = rf === 'id';
                 if (crf && !refModel.properties[rf]) {
-                    refModel.properties[rf] = refIdDefinition();
+                    refModel.properties[rf] = refIdDefinition(true);
                 } else if (clf && !schema.properties[lf]) {
-                    schema.properties[lf] = refIdDefinition();
+                    schema.properties[lf] = refIdDefinition(true);
                 }
                 if (!schema.properties[lf])
                     throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, schema.name, lf);
