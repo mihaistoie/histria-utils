@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "name": "order",
+    "nameSpace": "compositions",
+    "properties": {
+        "totalAmount": {
+            "type": "number",
+            "default": 0
+        }
+    },
+    "relations": {
+        "items": {
+            "type": "hasMany",
+            "model": "orderItem",
+            "aggregationKind": "composite",
+            "invRel": "order",
+            "localFields": ["id"],
+            "foreignFields": ["orderId"]
+        }
+    }
+}

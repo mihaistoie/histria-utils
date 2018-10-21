@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "name": "tree",
+    "nameSpace": "compositions",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "id": {
+            "type": "integer"
+        }
+    },
+    "relations": {
+        "leafs": {
+            "type": "hasMany",
+            "model": "tree",
+            "aggregationKind": "composite",
+            "invRel": "parent",
+            "localFields": ["id"],
+            "foreignFields": ["parentId"]
+        },
+        "parent": {
+            "type": "belongsTo",
+            "model": "tree",
+            "aggregationKind": "composite",
+            "invRel": "leafs",
+            "localFields": ["parentId"],
+            "foreignFields": ["id"]
+        }
+    }
+}

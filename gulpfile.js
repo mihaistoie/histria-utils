@@ -61,7 +61,7 @@ gulp.task('ts', () => {
 });
 
 
-gulp.task('test', () => {
+gulp.task('test-compile', () => {
     const tsProject = ts.createProject(path.resolve('./tsconfig.json'));
     const tsResult = gulp.src(['./src/**/*.ts', '!./src/lib/**', '!./src/index.ts'])
         .pipe(sourcemaps.init())
@@ -81,8 +81,14 @@ gulp.task('test', () => {
         .pipe(gulp.dest(path.resolve('./')));
 });
 
+gulp.task('copy-json', () => {
+   return gulp.src(['./src/**/*.json', '!./src/lib/**'])
+        .pipe(gulp.dest(path.resolve('./')));
+
+});
 
 
+gulp.task('test', gulp.series('test-compile', 'copy-json'));
 
 gulp.task('build', gulp.series('clean', 'tslint', 'ts', 'test'));
 gulp.task('default', gulp.series('build'));

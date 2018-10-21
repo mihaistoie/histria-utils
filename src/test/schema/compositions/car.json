@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "name": "car",
+    "nameSpace": "compositions",
+    "properties": {
+        "engineChangedHits": {
+            "type": "integer",
+            "default": 0
+        },
+        "engineName": {
+            "type": "string"
+        }
+        
+    },
+    "relations": {
+        "engine": {
+            "type": "hasOne",
+            "model": "engine",
+            "aggregationKind": "composite",
+            "invRel": "car",
+            "localFields": ["id"],
+            "foreignFields": ["carId"]
+        }
+    }
+}
