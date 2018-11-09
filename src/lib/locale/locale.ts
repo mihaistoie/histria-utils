@@ -1,6 +1,6 @@
 
-let
-    fr_FR = {
+const
+    frFR = {
         number: {
             decimalSep: ',',
             thousandSep: ' ',
@@ -21,8 +21,9 @@ let
             weekStart: 1
 
         }
-    },
-    en_US = {
+    };
+const
+    enUS = {
         number: {
             decimalSep: '.',
             thousandSep: ' ',
@@ -45,16 +46,11 @@ let
         }
     };
 
-
-let supportedLocale: any = {
-    en_US: en_US,
-    fr_FR: fr_FR
-}
-
-
+const supportedLocale: any = {
+    en_US: enUS,
+    fr_FR: frFR
+};
 
 export function locale(lang: string): any {
     return supportedLocale[lang];
 }
-
-

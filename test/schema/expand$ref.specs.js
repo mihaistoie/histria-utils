@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const index_1 = require("../../index");
 async function execTests() {
-    let model = {};
-    let schema = {
+    const model = {};
+    const schema = {
         properties: {
             name: { $ref: '#/definitions/string' },
             address: { $ref: '#/definitions/address' }
@@ -19,7 +19,7 @@ async function execTests() {
             string: { type: 'string' }
         }
     };
-    let excepted = {
+    const excepted = {
         properties: {
             name: { type: 'string' },
             address: {
@@ -43,7 +43,7 @@ async function execTests() {
     assert.deepEqual(schema, excepted);
 }
 describe('Expand Schema $ref', () => {
-    it('#/definitions test ', function (done) {
+    it('#/definitions test ', (done) => {
         execTests().then(() => {
             done();
         }).catch((ex) => {

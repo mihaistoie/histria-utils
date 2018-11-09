@@ -336,7 +336,6 @@ const
         }
     };
 
-
 describe('Schema generation', () => {
     before(() => {
         schemaManager().registerSchema(CAR_SCHEMA);
@@ -349,16 +348,16 @@ describe('Schema generation', () => {
         schemaManager().registerSchema(ORDERITEM_SCHEMA);
     });
     it('Test 1', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'id',
                 'name',
-                { 'engineId': 'engine.id' },
-                { 'engineCode': 'engine.code' }
+                { engineId: 'engine.id' },
+                { engineCode: 'engine.code' }
             ]
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -384,14 +383,14 @@ describe('Schema generation', () => {
         });
     });
     it('Test 2', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'name',
                 'engine.code'
             ]
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -412,12 +411,12 @@ describe('Schema generation', () => {
         });
     });
     it('Test 3', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'name',
                 {
-                    'engineInfo': 'engine',
-                    'properties': [
+                    engineInfo: 'engine',
+                    properties: [
                         'id',
                         'code'
                     ]
@@ -425,7 +424,7 @@ describe('Schema generation', () => {
             ]
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -474,7 +473,7 @@ describe('Schema generation', () => {
             }
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'car', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -527,7 +526,7 @@ describe('Schema generation', () => {
             }
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'tree', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'tree', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -592,7 +591,7 @@ describe('Schema generation', () => {
     it('Test 6', () => {
         const pattern = {
             allOf: [
-                { '$ref': '#/definitions/tree' }
+                { $ref: '#/definitions/tree' }
             ],
             definitions: {
                 tree: {
@@ -607,7 +606,7 @@ describe('Schema generation', () => {
             }
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'tree', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'tree', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -699,7 +698,7 @@ describe('Schema generation', () => {
             }
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('ref', 'car', pattern);
+        const schema = schemaManager().serialization2Schema('ref', 'car', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -755,7 +754,7 @@ describe('Schema generation', () => {
             }
         };
         serialization.check(pattern);
-        let schema = schemaManager().serialization2Schema('compositions', 'order', pattern);
+        const schema = schemaManager().serialization2Schema('compositions', 'order', pattern);
         assert.deepEqual(schema, {
             type: 'object',
             properties: {
@@ -790,6 +789,4 @@ describe('Schema generation', () => {
         });
     });
 
-
 });
-

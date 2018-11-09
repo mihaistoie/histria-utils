@@ -2,14 +2,13 @@
 import * as assert from 'assert';
 import { helper, ApplicationError } from '../../index';
 
-
 describe('Utils', () => {
     it('Merge', () => {
-        let src = { type: 'object', properties: { country: { type: 'string' } } };
+        const src = { type: 'object', properties: { country: { type: 'string' } } };
         let dst = { type: 'object' };
         helper.merge(src, dst);
 
-        let excepted = { type: 'object', properties: { country: { type: 'string' } } };
+        const excepted = { type: 'object', properties: { country: { type: 'string' } } };
         assert.deepEqual(dst, excepted);
 
         dst = { type: 'object' };
@@ -20,7 +19,6 @@ describe('Utils', () => {
         helper.merge({ a: null }, dst);
         assert.equal(Object.keys(dst).length, 1);
 
-
         let error = new ApplicationError('Test', 400);
         assert.equal(error.message, 'Test');
         error = new ApplicationError('Test');
@@ -29,7 +27,7 @@ describe('Utils', () => {
     });
     it('Destroy', () => {
         const toDestroy = { a: 'test', b: { c: 'x' } };
-        helper.destroy(toDestroy)
+        helper.destroy(toDestroy);
         assert.deepEqual(toDestroy, { a: null, b: null });
         let c = 0;
         const toDestroyWithDestructor = {

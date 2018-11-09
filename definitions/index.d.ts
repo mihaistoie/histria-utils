@@ -34,3 +34,4 @@ export declare const helper: {
 export declare const serialization: {
     check: typeof check;
 };
+//# sourceMappingURL=index.d.ts.map

@@ -15,3 +15,4 @@ export declare const JSONFORMATS: {
     email: string;
     json: string;
 };
+//# sourceMappingURL=schema-consts.d.ts.map

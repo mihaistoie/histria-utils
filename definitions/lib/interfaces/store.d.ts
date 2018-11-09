@@ -8,3 +8,4 @@ export interface IStore {
     save(data: any): Promise<void>;
     initNameSpace(nameSpace: string, data: any): Promise<void>;
 }
+//# sourceMappingURL=store.d.ts.map

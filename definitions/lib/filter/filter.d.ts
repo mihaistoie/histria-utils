@@ -7,3 +7,4 @@ export declare function findInMap(query: any, map: Map<any, any>, options?: {
     transform?: (item: any) => any;
 }): any;
 export declare function filter(query: any, array: any[]): any;
+//# sourceMappingURL=filter.d.ts.map

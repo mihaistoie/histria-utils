@@ -1,12 +1,10 @@
-
-
 export function findInArray(query: any, array: any[], options?: { findFirst?: boolean, transform?: (item: any) => any }) {
-    let validator = _parse(query);
-    let findFirst = options && options.findFirst;
-    let transform = options && options.transform ? options.transform : _transform;
+    const validator = _parse(query);
+    const findFirst = options && options.findFirst;
+    const transform = options && options.transform ? options.transform : _transform;
     if (findFirst) {
         if (array) {
-            for (let item of array) {
+            for (const item of array) {
                 if (_validate(validator, transform(item)))
                     return item;
 
@@ -16,7 +14,9 @@ export function findInArray(query: any, array: any[], options?: { findFirst?: bo
 
     } else {
         if (array) {
-            let _filter = (item: any) => { return _validate(validator, transform(item)); };
+            const _filter = (item: any) => {
+                return _validate(validator, transform(item));
+            };
             return array.filter(_filter);
         }
         return [];
@@ -24,13 +24,13 @@ export function findInArray(query: any, array: any[], options?: { findFirst?: bo
 }
 
 export function findInMap(query: any, map: Map<any, any>, options?: { findFirst?: boolean, transform?: (item: any) => any }) {
-    let validator = _parse(query);
-    let findFirst = options && options.findFirst;
-    let transform = options && options.transform ? options.transform : _transform;
-    let res = [];
+    const validator = _parse(query);
+    const findFirst = options && options.findFirst;
+    const transform = options && options.transform ? options.transform : _transform;
+    const res = [];
     if (map) {
-        for (let mItem of map) {
-            let item = mItem[1];
+        for (const mItem of map) {
+            const item = mItem[1];
             if (_validate(validator, transform(item))) {
                 if (findFirst)
                     return item;
@@ -47,35 +47,32 @@ export function filter(query: any, array: any[]) {
 }
 
 function or(predicate: (a: any, b: any) => boolean): (a: any, b: any) => boolean {
-    return function (a, b): boolean {
+    return (a, b): boolean => {
         if (!Array.isArray(b) || !b.length) return predicate(a, b);
         for (let i = 0, n = b.length; i < n; i++) {
-            let obj = b[i];
+            const obj = b[i];
             if (predicate(a, obj))
                 return true;
         }
         return false;
-    }
+    };
 }
 
 function and(predicate: (a: any, b: any) => boolean): (a: any, b: any) => boolean {
-    return function (a, b): boolean {
+    return (a, b): boolean => {
         if (!Array.isArray(b) || !b.length) return predicate(a, b);
         for (let i = 0, n = b.length; i < n; i++) {
-            let obj = b[i];
+            const obj = b[i];
             if (!predicate(a, obj))
                 return false;
         }
         return true;
-    }
+    };
 }
-
-
 
 function _validate(validator: any, b: any) {
     return validator.v(validator.a, b);
 }
-
 
 const OPERATORS: any = {
     $eq: or((a, b) => a(b)),
@@ -138,24 +135,24 @@ const OPERATORS: any = {
 const PREPARERS: any = {
     $eq(a: any) {
         if (a instanceof RegExp) {
-            return function (b: any) {
+            return (b: any) => {
                 return typeof b === 'string' && a.test(b);
             };
         } else if (a instanceof Function) {
             return a;
         } else if (Array.isArray(a) && !a.length) {
             // Special case of a == []
-            return function (b: any) {
+            return (b: any) => {
                 return (Array.isArray(b) && !b.length);
             };
         } else if (a === null) {
-            return function (b: any) {
+            return (b: any) => {
                 // will match both null and undefined
                 return b === null || b === undefined;
-            }
+            };
         }
 
-        return function (b: any) {
+        return (b: any) => {
             return _compare(b, a) === 0;
         };
     },
@@ -192,11 +189,9 @@ const PREPARERS: any = {
     }
 };
 
-
 function _isFunction(value: any) {
     return typeof value === 'function';
 }
-
 
 function _search(arr: any, validator: any): number {
     return arr.findIndex((item: any) => _validate(validator, item));
@@ -211,7 +206,7 @@ function _createValidator(a: any, validate: any) {
 }
 
 function nestedValidator(a: any, b: any) {
-    let values: any = [];
+    const values: any = [];
     _findValues(b, a.k, 0, values);
     if (values.length === 1)
         return _validate(a.nv, values[0]);
@@ -233,7 +228,7 @@ function _findValues(current: any, path: any, index: number, values: any) {
         values.push(current);
         return;
     }
-    let key = path[index];
+    const key = path[index];
 
     // ensure that if current is an array, that the current key
     // is NOT an array index. This sort of thing needs to work:
@@ -241,7 +236,7 @@ function _findValues(current: any, path: any, index: number, values: any) {
     if (Array.isArray(current) && isNaN(Number(key))) {
         current.forEach(item => {
             _findValues(item, path, index, values);
-        })
+        });
     } else {
         _findValues(current[key], path, index + 1, values);
     }
@@ -262,7 +257,7 @@ function _parse(query: any) {
         query = { $eq: query };
     }
 
-    let validators: any[] = [];
+    const validators: any[] = [];
 
     Object.keys(query).forEach(key => {
         let a = query[key];
@@ -278,10 +273,7 @@ function _parse(query: any) {
 
     });
 
-
     return validators.length === 1 ? validators[0] : _createValidator(validators, OPERATORS.$and);
 }
 
-
 function _transform(value: any) { return value; }
-

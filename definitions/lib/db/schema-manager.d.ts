@@ -1,7 +1,7 @@
 export declare class SchemaManager {
+    static singleton: SchemaManager;
     private _namespaces;
     private _classes;
-    static singleton: SchemaManager;
     constructor();
     registerSchema(schema: any): void;
     childrenAndRefsOfClass(fullClassName: string): {
@@ -17,8 +17,9 @@ export declare class SchemaManager {
         isArray: boolean;
         isRelation: boolean;
     } | null;
+    serialization2Schema(nameSpace: string, name: string, serialization: any): any;
     private _path2schema;
     private _serializeSchema;
-    serialization2Schema(nameSpace: string, name: string, serialization: any): any;
 }
 export declare function schemaManager(): SchemaManager;
+//# sourceMappingURL=schema-manager.d.ts.map

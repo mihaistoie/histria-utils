@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const index_1 = require("../../index");
 describe('Helper', () => {
-    let topic = [{
+    const topic = [{
             name: 'craig',
             age: 90001,
             address: {
@@ -53,7 +53,7 @@ describe('Helper', () => {
             ]
         }
     ];
-    let co = {
+    const co = {
         car: [
             {
                 id: 1001,
@@ -100,16 +100,16 @@ describe('Helper', () => {
         assert.deepEqual(nt, topic, 'clone (1)');
     });
     it('Clone complex object', () => {
-        let nt = index_1.helper.clone(co);
+        const nt = index_1.helper.clone(co);
         assert.deepEqual(nt, co, 'clone (2)');
     });
     it('Clone null', () => {
         assert.deepEqual(index_1.helper.clone(null), null, 'clone (3)');
     });
     it('Clone simple object ', () => {
-        let so = { a: 5, b: [null, undefined] };
+        const so = { a: 5, b: [null, undefined] };
         so.c = null;
-        let nt = index_1.helper.clone(so);
+        const nt = index_1.helper.clone(so);
         assert.deepEqual(nt, so, 'clone (4)');
     });
     it('Clone number', () => {
@@ -125,38 +125,38 @@ describe('Helper', () => {
         assert.equal(index_1.helper.clone(undefined), undefined, 'clone (7)');
     });
     it('Extract values (1)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('item', null, res);
         assert.equal(res.length, 0, 'Extract values (1)');
     });
     it('Extract values (2)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('item', undefined, res);
         assert.equal(res.length, 0, 'Extract values (2)');
     });
     it('Extract values (3)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('item', {}, res);
         assert.equal(res.length, 0, 'Extract values (3)');
     });
     it('Extract values (4)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('address', topic[0], res);
         assert.equal(res.length, 1, 'Extract values (4)');
     });
     it('Extract values (5)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('hobbies', topic[1], res);
         assert.equal(res.length, 3, 'Extract values (5)');
     });
     it('Extract values (6)', () => {
-        let res = [];
+        const res = [];
         index_1.helper.valuesByPath('car.engine', co, res);
         assert.equal(res.length, 2, 'Extract values (3)');
     });
     it('Extract values (7)', () => {
         let res = [];
-        let a = { b: 1 };
+        const a = { b: 1 };
         index_1.helper.valuesByPath('', a, res);
         assert.deepEqual(res, [a], 'Extract values (7)');
         res = [];

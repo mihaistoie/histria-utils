@@ -15,9 +15,6 @@ export { IStore } from './lib/interfaces/store';
 export { schemaManager } from './lib/db/schema-manager';
 export { DbDriver, dbManager, DbManager } from './lib/db/db-manager';
 
-
-
-
 export const schemaUtils = {
     typeOfProperty: typeOfProperty,
     isHidden: isHidden,
@@ -33,7 +30,7 @@ export const schemaUtils = {
     loadModel: loadModel,
     roleToQuery: roleToQuery,
     roleToQueryInv: roleToQueryInv
-}
+};
 
 import { merge, clone, destroy, format, valuesByPath } from './lib/utils/helper';
 
@@ -43,9 +40,8 @@ export const helper = {
     destroy: destroy,
     format: format,
     valuesByPath: valuesByPath
-}
+};
 
 export const serialization = {
     check: check
-}
-
+};

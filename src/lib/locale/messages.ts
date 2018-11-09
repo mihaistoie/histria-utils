@@ -1,4 +1,4 @@
-let
+const
     en = {
         numbers: {
             isNan: 'Invalid number value (nan).',
@@ -16,7 +16,8 @@ let
             invalidEmail: 'Invalid Email Address',
             minLength: '\'{0}\' must be at least \'{1}\' characters'
         }
-    },
+    };
+const
     fr = {
         numbers: {
             isNan: 'Pas un nombre (nan).',
@@ -36,13 +37,13 @@ let
         }
     };
 
-let locales: any = {
-    en: en,
-    fr: fr
-}
+const
+    locales: any = {
+        en: en,
+        fr: fr
+    };
 
 export function messages(lang?: string): any {
     lang = lang || 'en';
     return locales[lang] || locales.en;
 }
-

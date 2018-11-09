@@ -1,7 +1,6 @@
 import * as util from 'util';
 import * as helper from '../utils/helper';
 
-
 export function check(serialization: any) {
     _resolveAllOf(serialization, serialization.definitions, []);
     _checkSerialization(serialization, serialization.definitions, [], true);
@@ -18,7 +17,7 @@ const
     _definitionLen = '#/definitions/'.length;
 
 function _checkKey(key: string): string {
-    let a = key.split('.');
+    const a = key.split('.');
     return a[a.length - 1];
 }
 function _checkSerialization(serialization: any, definitions: any, stack: string[], root: boolean) {
@@ -29,7 +28,7 @@ function _checkSerialization(serialization: any, definitions: any, stack: string
             if (typeof item === 'string')
                 item = { key: _checkKey(item), value: item };
             else {
-                let keys = Object.keys(item);
+                const keys = Object.keys(item);
                 if (keys.length === 1) {
                     item = { key: _checkKey(keys[0]), value: item[keys[0]] };
                 } else if (keys.length === 2) {
@@ -62,30 +61,29 @@ function _checkSerialization(serialization: any, definitions: any, stack: string
             serialization.properties[index] = item;
         });
         if (!hasId)
-            serialization.properties.push({ key: 'id', value: 'id' })
+            serialization.properties.push({ key: 'id', value: 'id' });
         if (root && definitions) {
             Object.keys(definitions).forEach(definitionName => {
-                let definition = definitions[definitionName];
+                const definition = definitions[definitionName];
                 if (definition.properties) {
                     _checkSerialization(definition, null, [], false);
 
                 }
-            })
+            });
 
         }
     }
 }
 
-
 function _resolveAllOf(item: any, definitions: any, stack: string[]) {
     if (item.allOf) {
-        let allOf = item.allOf;
+        const allOf = item.allOf;
         delete item.allOf;
         if (!Array.isArray(allOf))
-            throw 'Invalid allOf. Not an array.'
+            throw 'Invalid allOf. Not an array.';
         allOf.forEach((ii: any) => {
             if (ii.$ref && stack.indexOf(ii.$ref) < 0) {
-                _expandRef(ii, definitions, [])
+                _expandRef(ii, definitions, []);
             }
             helper.merge(ii, item);
         });

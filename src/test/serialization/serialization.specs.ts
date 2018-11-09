@@ -1,19 +1,18 @@
 import * as assert from 'assert';
 import { serialization } from '../../index';
 
-
 describe('Serialization', () => {
     it('Pattern 1', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'id',
                 'name',
-                { 'engineId': 'engine.id' },
-                { 'engineCode': 'engine.code' }
+                { engineId: 'engine.id' },
+                { engineCode: 'engine.code' }
             ]
         };
         serialization.check(pattern);
-        let excepted = {
+        const excepted = {
             properties: [
                 { key: 'id', value: 'id' },
                 { key: 'name', value: 'name' },
@@ -27,14 +26,14 @@ describe('Serialization', () => {
     });
 
     it('Pattern 2', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'name',
                 'engine.code'
             ]
         };
         serialization.check(pattern);
-        let excepted = {
+        const excepted = {
             properties: [
                 { key: 'name', value: 'name' },
                 { key: 'code', value: 'engine.code' },
@@ -46,12 +45,12 @@ describe('Serialization', () => {
 
     });
     it('Pattern 3', () => {
-        let pattern = {
+        const pattern = {
             properties: [
                 'name',
                 {
-                    'engineInfo': 'engine',
-                    'properties': [
+                    engineInfo: 'engine',
+                    properties: [
                         'id',
                         'code'
                     ]
@@ -59,7 +58,7 @@ describe('Serialization', () => {
             ]
         };
         serialization.check(pattern);
-        let excepted = {
+        const excepted = {
             properties: [
                 { key: 'name', value: 'name' },
                 {
@@ -188,7 +187,7 @@ describe('Serialization', () => {
     it('Pattern 6', () => {
         const pattern = {
             allOf: [
-                { '$ref': '#/definitions/tree' }
+                { $ref: '#/definitions/tree' }
             ],
             definitions: {
                 tree: {
@@ -313,8 +312,4 @@ describe('Serialization', () => {
 
     });
 
-
-
 });
-
-

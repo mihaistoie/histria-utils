@@ -12,7 +12,8 @@ const
             } else
                 return item;
         });
-    },
+    };
+const
     _cloneObject = (src: any): any => {
         const res: any = {};
         Object.keys(src).forEach(propertyName => {
@@ -24,37 +25,40 @@ const
                     res[propertyName] = _cloneObject(item);
                 } else
                     res[propertyName] = item;
-            }
-            else res[propertyName] = item;
+            } else
+                res[propertyName] = item;
         });
         return res;
-    },
+    };
+const
     _merge = (src: any, dst: any): void => {
         if (!src) return;
-        for (let p in src) {
+        Object.keys(src).forEach(p => {
             const pv = src[p];
             let ov = dst[p];
-            if (pv === null) continue;
+            if (pv === null) return;
             if (typeof pv === 'object' && !Array.isArray(pv)) {
                 ov = ov || {};
                 _merge(pv, ov);
                 dst[p] = ov;
             } else
                 dst[p] = pv;
-        }
-    },
+        });
+    };
+const
     _destroyObjects = (obj: any): void => {
         Object.keys(obj).forEach(pn => {
-            let o = obj[pn];
+            const o = obj[pn];
             if (o && o.destroy)
                 o.destroy();
             obj[pn] = null;
         });
 
-    },
+    };
+const
     _clone = (src: any): any => {
         if (!src) return src;
-        let tt = typeof src;
+        const tt = typeof src;
         if (tt === 'object') {
             if (Array.isArray(src))
                 return _cloneArray(src);
@@ -62,21 +66,23 @@ const
                 return _cloneObject(src);
         } else
             return src;
-    },
+    };
+const
     _format = (...args: any[]): string => {
-        let s: string = args[0];
-        return s.replace(/{(\d+)}/g, function (match: string, num: string) {
-            let n = parseInt(num, 10);
+        const s: string = args[0];
+        return s.replace(/{(\d+)}/g, (match: string, num: string) => {
+            const n = parseInt(num, 10);
             return args[n + 1];
         });
-    },
+    };
+const
     _valuesByPath = (path: string, value: any, res: any[]): void => {
         if (!value) return;
         if (!path) {
             res.push(value);
             return;
         }
-        let ii = path.indexOf('.');
+        const ii = path.indexOf('.');
         if (ii >= 0) {
             value = value[path.substr(0, ii)];
             path = path.substr(ii + 1);
@@ -92,8 +98,7 @@ const
                 });
             } else _valuesByPath(path, value, res);
         }
-    }
-
+    };
 
 export const merge = _merge;
 export const clone = _clone;

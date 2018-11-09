@@ -6,8 +6,6 @@ describe('Schema', () => {
     it('Load model', async () => {
         const model = {};
         await index_1.schemaUtils.loadModel(path.join(__dirname, 'compositions'), model);
-        console.log(model);
-        // const a = schemaUtils.roleToQuery(model. model)
     });
 });
 

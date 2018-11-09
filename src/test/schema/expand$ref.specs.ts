@@ -3,8 +3,8 @@ import * as assert from 'assert';
 import { schemaUtils } from '../../index';
 
 async function execTests() {
-    let model = {};
-    let schema = {
+    const model = {};
+    const schema = {
         properties: {
             name: { $ref: '#/definitions/string' },
             address: { $ref: '#/definitions/address' }
@@ -20,7 +20,7 @@ async function execTests() {
         }
     };
 
-    let excepted = {
+    const excepted = {
         properties: {
             name: { type: 'string' },
             address: {
@@ -46,15 +46,13 @@ async function execTests() {
 }
 
 describe('Expand Schema $ref', () => {
-    it('#/definitions test ', function (done) {
+    it('#/definitions test ', (done) => {
         execTests().then(() => {
             done();
         }).catch((ex) => {
             done(ex);
         });
 
-
     });
 
 });
-

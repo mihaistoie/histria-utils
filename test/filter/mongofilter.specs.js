@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const index_1 = require("../../index");
 describe('Mongo filter', () => {
-    let topic = [
+    const topic = [
         {
             name: 'craig',
             age: 90001,
@@ -54,7 +54,7 @@ describe('Mongo filter', () => {
             ]
         }
     ];
-    it('throws error if $not is incorrect', function () {
+    it('throws error if $not is incorrect', () => {
         let error = false;
         try {
             index_1.filter({
@@ -66,8 +66,8 @@ describe('Mongo filter', () => {
         }
         assert.equal(error, false);
     });
-    it('Photography in brazil count of 1', function () {
-        let res = index_1.filter({
+    it('Photography in brazil count of 1', () => {
+        const res = index_1.filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -77,8 +77,8 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 1);
     });
-    it('Photography in brazil, haiti, and costa rica count of 1', function () {
-        let res = index_1.filter({
+    it('Photography in brazil, haiti, and costa rica count of 1', () => {
+        const res = index_1.filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -89,8 +89,8 @@ describe('Mongo filter', () => {
         assert.equal(res.length, 1);
         assert.equal(res[0], topic[0]);
     });
-    it('hobbies of photography, cooking, or biking count of 2', function () {
-        let res = index_1.filter({
+    it('hobbies of photography, cooking, or biking count of 2', () => {
+        const res = index_1.filter({
             hobbies: {
                 name: {
                     $in: ['photography', 'cooking', 'biking']
@@ -99,24 +99,24 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 2);
     });
-    it('hobbies of photography, cooking, or biking count of 3', function () {
-        let res = index_1.filter({
+    it('hobbies of photography, cooking, or biking count of 3', () => {
+        const res = index_1.filter({
             'hobbies.name': {
                 $in: ['photography', 'cooking', 'biking']
             }
         }, topic);
         assert.equal(res.length, 2);
     });
-    it('hobbies of photography, cooking, or biking count of 4', function () {
-        let res = index_1.filter({
+    it('hobbies of photography, cooking, or biking count of 4', () => {
+        const res = index_1.filter({
             'hobbies.name': {
                 $in: ['XXX']
             }
         }, topic);
         assert.equal(res.length, 0);
     });
-    it('Complex filter count of 2', function () {
-        let res = index_1.filter({
+    it('Complex filter count of 2', () => {
+        const res = index_1.filter({
             hobbies: {
                 name: 'photography',
                 places: {
@@ -132,8 +132,8 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 2);
     });
-    it('Complex filter  count of 0', function () {
-        let res = index_1.filter({
+    it('Complex filter  count of 0', () => {
+        const res = index_1.filter({
             hobbies: {
                 name: 'photos',
                 places: {
@@ -143,22 +143,22 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 0);
     });
-    it('Filter subobject hobbies count of 3', function () {
-        let res = index_1.filter({
+    it('Filter subobject hobbies count of 3', () => {
+        const res = index_1.filter({
             'hobbies.name': 'photography'
         }, topic);
         assert.equal(res.length, 2);
     });
-    it('Filter dot-notation hobbies of photography, cooking, and biking count of 3', function () {
-        let res = index_1.filter({
+    it('Filter dot-notation hobbies of photography, cooking, and biking count of 3', () => {
+        const res = index_1.filter({
             'hobbies.name': {
                 $in: ['photography', 'cooking', 'biking']
             }
         }, topic);
         assert.equal(res.length, 2);
     });
-    it('Filter to complex dot-search count of 2', function () {
-        let res = index_1.filter({
+    it('Filter to complex dot-search count of 2', () => {
+        const res = index_1.filter({
             'hobbies.name': 'photography',
             'hobbies.places': {
                 $in: ['costa rica']
@@ -170,23 +170,23 @@ describe('Mongo filter', () => {
         }, topic);
         assert.equal(res.length, 2);
     });
-    describe('nesting', function () {
-        it('$eq for nested object', function () {
-            let res = index_1.filter({ 'sub.num': { '$eq': 10 } }, loremArr);
+    describe('nesting', () => {
+        it('$eq for nested object', () => {
+            const res = index_1.filter({ 'sub.num': { $eq: 10 } }, loremArr);
             assert(res.length > 0);
-            res.forEach(function (v) {
+            res.forEach((v) => {
                 assert.equal(10, v.sub.num);
             });
         });
-        it('$ne for nested object', function () {
-            let res = index_1.filter({ 'sub.num': { '$ne': 10 } }, loremArr);
+        it('$ne for nested object', () => {
+            const res = index_1.filter({ 'sub.num': { $ne: 10 } }, loremArr);
             assert(res.length > 0);
-            res.forEach(function (v) {
+            res.forEach((v) => {
                 assert.notEqual(10, v.sub.num);
             });
         });
-        it('$regex for nested object (one missing key)', function () {
-            let persons = [{
+        it('$regex for nested object (one missing key)', () => {
+            const persons = [{
                     id: 1,
                     prof: 'Mr. Moriarty'
                 }, {
@@ -201,8 +201,8 @@ describe('Mongo filter', () => {
                     name: 'Mr. Holmes',
                     prof: 'Detective'
                 }];
-            let q = { 'name': { '$regex': 'n' } };
-            let res = index_1.filter(q, persons);
+            const q = { name: { $regex: 'n' } };
+            const res = index_1.filter(q, persons);
             assert.deepEqual(res, [{
                     id: 3,
                     name: 'Dr. Watson',
@@ -210,8 +210,8 @@ describe('Mongo filter', () => {
                 }]);
         });
     });
-    describe('$where', function () {
-        let couples = [{
+    describe('$where', () => {
+        const couples = [{
                 name: 'SMITH',
                 person: [{
                         firstName: 'craig',
@@ -236,101 +236,101 @@ describe('Mongo filter', () => {
                     }
                 ]
             }];
-        it('can filter people', function () {
-            let results = index_1.filter({ person: { $elemMatch: { 'gender': 'female', 'age': { '$lt': 30 } } } }, couples);
+        it('can filter people', () => {
+            let results = index_1.filter({ person: { $elemMatch: { gender: 'female', age: { $lt: 30 } } } }, couples);
             assert.equal(results[0].name, 'SMITH');
-            results = index_1.filter({ person: { $elemMatch: { 'gender': 'male', 'age': { '$lt': 30 } } } }, [couples[0]]);
+            results = index_1.filter({ person: { $elemMatch: { gender: 'male', age: { $lt: 30 } } } }, [couples[0]]);
             assert.equal(results.length, 0);
         });
     });
 });
-let loremArr = [
+const loremArr = [
     {
-        'num': 1,
-        'pum': 1,
-        'sub': {
-            'num': 1,
-            'pum': 1
+        num: 1,
+        pum: 1,
+        sub: {
+            num: 1,
+            pum: 1
         }
     },
     {
-        'num': 2,
-        'pum': 2,
-        'sub': {
-            'num': 2,
-            'pum': 2
+        num: 2,
+        pum: 2,
+        sub: {
+            num: 2,
+            pum: 2
         }
     },
     {
-        'num': 3,
-        'pum': 3,
-        'sub': {
-            'num': 3,
-            'pum': 3
+        num: 3,
+        pum: 3,
+        sub: {
+            num: 3,
+            pum: 3
         }
     },
     {
-        'num': 4,
-        'pum': 4,
-        'sub': {
-            'num': 4,
-            'pum': 4
+        num: 4,
+        pum: 4,
+        sub: {
+            num: 4,
+            pum: 4
         }
     },
     {
-        'num': 5,
-        'pum': 5,
-        'sub': {
-            'num': 5,
-            'pum': 5
+        num: 5,
+        pum: 5,
+        sub: {
+            num: 5,
+            pum: 5
         }
     },
     {
-        'num': 6,
-        'pum': 6,
-        'sub': {
-            'num': 6,
-            'pum': 6
+        num: 6,
+        pum: 6,
+        sub: {
+            num: 6,
+            pum: 6
         }
     },
     {
-        'num': 7,
-        'pum': 7,
-        'sub': {
-            'num': 7,
-            'pum': 7
+        num: 7,
+        pum: 7,
+        sub: {
+            num: 7,
+            pum: 7
         }
     },
     {
-        'num': 8,
-        'pum': 8,
-        'sub': {
-            'num': 8,
-            'pum': 8
+        num: 8,
+        pum: 8,
+        sub: {
+            num: 8,
+            pum: 8
         }
     },
     {
-        'num': 9,
-        'pum': 9,
-        'sub': {
-            'num': 9,
-            'pum': 9
+        num: 9,
+        pum: 9,
+        sub: {
+            num: 9,
+            pum: 9
         }
     },
     {
-        'num': 10,
-        'pum': 10,
-        'sub': {
-            'num': 10,
-            'pum': 10
+        num: 10,
+        pum: 10,
+        sub: {
+            num: 10,
+            pum: 10
         }
     },
     {
-        'num': 11,
-        'pum': 11,
-        'sub': {
-            'num': 10,
-            'pum': 10
+        num: 11,
+        pum: 11,
+        sub: {
+            num: 10,
+            pum: 10
         }
     }
 ];
