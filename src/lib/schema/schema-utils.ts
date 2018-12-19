@@ -505,12 +505,11 @@ function _checkRelations(schema: any, model: any) {
                         schema.properties[lf] = refIdDefinition(true);
                     }
                     if (!schema.properties[lf])
-                        throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, schema.name, lf);
-
+                        throw new Error(`Invalid relation "${schema.name}.${relName}", "${schema.name}.${lf}" - field not found.`);
                     if (!refModel.properties[rf])
-                        throw util.format('Invalid relation "%s.%s", "%s.%s" - field not found.', schema.name, relName, refModel.name, rf);
+                        throw new Error(`Invalid relation "${schema.name}.${relName}", "${refModel.name}.${rf}" - field not found.`);
                     if (refModel.properties[rf].type !== schema.properties[lf].type)
-                        throw util.format('Invalid relation "%s.%s", typeof %s != typeof %s.', schema.name, relName, refModel.properties[rf].type, schema.properties[lf].type);
+                        throw new Error(`Invalid relation "${schema.name}.${relName}",  typeof ${refModel.properties[rf].type} != ${typeof schema.properties[lf].type}.`);
                 });
             }
 

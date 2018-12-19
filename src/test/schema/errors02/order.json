@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "name": "order",
+    "nameSpace": "compositions",
+    "primaryKey": ["code1"],
+    "properties": {
+        "code1": {
+            "type": "string"
+        }
+    },
+    "relations": {
+        "items": {
+            "type": "hasMany",
+            "model": "orderItem",
+            "aggregationKind": "composite",
+            "invRel": "order",
+            "localFields": ["code"],
+            "foreignFields": ["orderCode"]
+        }
+    }
+}
